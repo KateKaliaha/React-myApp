@@ -1,0 +1,27 @@
+.header {
+  width: 100%;
+  height: 80px;
+  background-color: #3f4348;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  font-size: 40px;
+}
+
+a {
+  color: azure;
+  text-decoration: none;
+}
+
+.active {
+  text-decoration: solid;
+  color: rgb(202, 75, 157);
+  cursor: default;
+}
