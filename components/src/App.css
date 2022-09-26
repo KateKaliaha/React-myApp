@@ -1,4 +1,6 @@
 @import './component/Header/Header.css';
+@import './component/Search/Search.css';
+@import './pages/MainPage.css';
 
 .App {
   text-align: center;

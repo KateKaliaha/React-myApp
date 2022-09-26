@@ -1,6 +1,39 @@
 import React from 'react';
 
-function Search() {
-  return <input className="search" placeholder="Search..."></input>;
+type SearchState = {
+  value: string;
+};
+
+type SearchProps = Record<string, unknown>;
+
+class Search extends React.Component<SearchProps, SearchState> {
+  constructor(props: SearchProps) {
+    super(props);
+    this.state = {
+      value: localStorage.getItem('value') ? (localStorage.getItem('value') as string) : '',
+    };
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  render() {
+    return (
+      <input
+        className="search"
+        type="search"
+        onChange={this.handleChange}
+        value={(this.state as HTMLInputElement).value}
+        placeholder="Search..."
+      ></input>
+    );
+  }
+
+  handleChange(event: React.SyntheticEvent) {
+    this.setState({ value: (event.target as HTMLInputElement).value });
+  }
+
+  componentWillUnmount() {
+    localStorage.setItem('value', this.state.value);
+  }
 }
+
 export { Search };
