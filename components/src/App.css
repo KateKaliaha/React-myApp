@@ -1,42 +1,46 @@
 @import './component/Header/Header.css';
 @import './component/Search/Search.css';
 @import './pages/MainPage.css';
+@import './component/Card/Card.css';
+@import './component/CardList/CardList.css';
 
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  background-color: #e9e9e9;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.about-page,
+.error-page {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 30px;
+  font-size: 3rem;
+  text-align: center;
+  color: #3f4348;
 }
 
-.App-link {
-  color: #61dafb;
+.about-page p {
+  margin: 0;
+  margin-bottom: 20px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.error-page a {
+  color: #3f4348;
+  font-size: 4rem;
+  font-style: bold;
+}
+
+.error-page a:hover{
+  text-decoration: underline;
+}
+
+.error-number {
+  font-size: 15rem;
 }

@@ -1,0 +1,58 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  border: 2px solid #3f4348;
+  width: 20%;
+  margin-bottom: 20px;
+  background-color: aliceblue;
+}
+
+.card:hover {
+  transform: scale(1.01);
+  transition: 0.3s linear;
+  box-shadow: #3f4348 0px 5px 15px;
+}
+
+.card-header {
+  align-self: center;
+  font-size: 1.5rem;
+  color: #3f4348;
+  text-align: center;
+  justify-self: center;
+  height: 15%;
+  margin: 20px 10px 15px 10px;
+}
+
+.card-img {
+  display: inline-block;
+  border-bottom: 2px solid #3f4348;
+}
+
+.popular {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 10px 10px 10px;
+}
+
+.rate-container,
+.like-container {
+  display: flex;
+  gap: 10px;
+  font-size: 1.5rem;
+}
+
+.rate-container svg {
+  color: #ccac00;
+  height: 100%;
+}
+
+.like-container svg {
+  color: #9e1632;
+  height: 100%;
+}
+
+.rate-container p,
+.like-container p {
+  margin: 0;
+}

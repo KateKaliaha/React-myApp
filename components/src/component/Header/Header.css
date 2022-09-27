@@ -21,7 +21,6 @@ a {
 }
 
 .active {
-  text-decoration: solid;
   color: rgb(202, 75, 157);
   cursor: default;
 }

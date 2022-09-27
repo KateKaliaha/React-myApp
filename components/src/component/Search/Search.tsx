@@ -19,15 +19,16 @@ class Search extends React.Component<SearchProps, SearchState> {
     return (
       <input
         className="search"
+        id="search"
         type="search"
         onChange={this.handleChange}
         value={(this.state as HTMLInputElement).value}
-        placeholder="Search..."
+        placeholder="Поиск..."
       ></input>
     );
   }
 
-  handleChange(event: React.SyntheticEvent) {
+  handleChange(event: React.FormEvent) {
     this.setState({ value: (event.target as HTMLInputElement).value });
   }
 
