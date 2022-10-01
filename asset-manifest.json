@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/components/static/css/main.fbd1d12d.css",
-    "main.js": "/components/static/js/main.942cff2d.js",
-    "static/media/search.svg": "/components/static/media/search.bf83a24c74fc284242ff.svg",
-    "index.html": "/components/index.html",
-    "main.fbd1d12d.css.map": "/components/static/css/main.fbd1d12d.css.map",
-    "main.942cff2d.js.map": "/components/static/js/main.942cff2d.js.map"
+    "main.css": "/katekaliaha-REACT2022Q3/components/static/css/main.992ab7ff.css",
+    "main.js": "/katekaliaha-REACT2022Q3/components/static/js/main.942cff2d.js",
+    "static/media/search.svg": "/katekaliaha-REACT2022Q3/components/static/media/search.bf83a24c74fc284242ff.svg",
+    "index.html": "/katekaliaha-REACT2022Q3/components/index.html",
+    "main.992ab7ff.css.map": "/katekaliaha-REACT2022Q3/components/static/css/main.992ab7ff.css.map",
+    "main.942cff2d.js.map": "/katekaliaha-REACT2022Q3/components/static/js/main.942cff2d.js.map"
   },
   "entrypoints": [
-    "static/css/main.fbd1d12d.css",
+    "static/css/main.992ab7ff.css",
     "static/js/main.942cff2d.js"
   ]
 }
