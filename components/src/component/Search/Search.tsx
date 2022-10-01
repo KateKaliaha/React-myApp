@@ -4,7 +4,7 @@ type SearchState = {
   value: string;
 };
 
-type SearchProps = Record<string, unknown>;
+type SearchProps = Record<string, (value: string) => void>;
 
 class Search extends React.Component<SearchProps, SearchState> {
   constructor(props: SearchProps) {
@@ -15,25 +15,26 @@ class Search extends React.Component<SearchProps, SearchState> {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  render() {
+  handleChange(event: React.FormEvent) {
+    this.setState({ value: (event.target as HTMLInputElement).value });
+    this.props.filter((event.target as HTMLInputElement).value);
+  }
+
+  componentWillUnmount(): void {
+    localStorage.setItem('value', this.state.value);
+  }
+
+  render(): JSX.Element {
     return (
       <input
         className="search"
         id="search"
         type="search"
         onChange={this.handleChange}
-        value={(this.state as HTMLInputElement).value}
+        value={this.state.value}
         placeholder="Поиск..."
       ></input>
     );
-  }
-
-  handleChange(event: React.FormEvent) {
-    this.setState({ value: (event.target as HTMLInputElement).value });
-  }
-
-  componentWillUnmount() {
-    localStorage.setItem('value', this.state.value);
   }
 }
 

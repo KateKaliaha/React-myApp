@@ -1,0 +1,26 @@
+.error-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 30px;
+  font-size: 3rem;
+  text-align: center;
+  color: #3f4348;
+}
+
+.error-page a {
+  color: #3f4348;
+  font-size: 4rem;
+  font-style: bold;
+}
+
+.error-page a:hover{
+  text-decoration: underline;
+}
+
+.error-number {
+  font-size: 15rem;
+}

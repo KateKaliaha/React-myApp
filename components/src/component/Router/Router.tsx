@@ -1,8 +1,8 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { MainPage } from 'pages/MainPage';
-import { AboutPage } from 'pages/AboutPage';
-import { ErrorPage } from 'pages/ErrorPage';
+import { MainPage } from 'pages/MainPage/MainPage';
+import { AboutPage } from 'pages/AboutPage/AboutPage';
+import { ErrorPage } from 'pages/ErrorPage/ErrorPage';
 import { Layout } from 'component/Layout/Layout';
 
 function RouterInApp() {

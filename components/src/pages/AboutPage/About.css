@@ -1,0 +1,17 @@
+.about-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 30px;
+  font-size: 3rem;
+  text-align: center;
+  color: #3f4348;
+}
+
+.about-page p {
+  margin: 0;
+  margin-bottom: 20px;
+}

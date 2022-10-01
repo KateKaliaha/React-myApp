@@ -1,11 +1,15 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-function Navigation() {
+function Navigation(): JSX.Element {
   return (
     <nav className="nav-container">
-      <NavLink to={'/'}>Главная</NavLink>
-      <NavLink to={'/about'}>О нас</NavLink>
+      <NavLink to={'/'} end>
+        Главная
+      </NavLink>
+      <NavLink to={'/about'} end>
+        О нас
+      </NavLink>
     </nav>
   );
 }

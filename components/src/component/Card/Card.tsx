@@ -17,7 +17,7 @@ interface ICardProps {
   movie: ICard;
 }
 
-function Card({ movie }: ICardProps) {
+function Card({ movie }: ICardProps): JSX.Element {
   return (
     <>
       <div className="card">

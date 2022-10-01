@@ -1,8 +1,11 @@
 @import './component/Header/Header.css';
 @import './component/Search/Search.css';
-@import './pages/MainPage.css';
+@import './pages/MainPage/MainPage.css';
 @import './component/Card/Card.css';
 @import './component/CardList/CardList.css';
+@import './component/Message/Message.css';
+@import './pages/AboutPage/About.css';
+@import './pages/ErrorPage/Error.css';
 
 .App {
   text-align: center;
@@ -10,37 +13,4 @@
 
 body {
   background-color: #e9e9e9;
-}
-
-.about-page,
-.error-page {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 80%;
-  margin: 0 auto;
-  margin-top: 30px;
-  font-size: 3rem;
-  text-align: center;
-  color: #3f4348;
-}
-
-.about-page p {
-  margin: 0;
-  margin-bottom: 20px;
-}
-
-.error-page a {
-  color: #3f4348;
-  font-size: 4rem;
-  font-style: bold;
-}
-
-.error-page a:hover{
-  text-decoration: underline;
-}
-
-.error-number {
-  font-size: 15rem;
 }

@@ -12,5 +12,7 @@ describe('App', () => {
     );
 
     expect(screen.getAllByRole('img')).toBeInTheDocument;
+    expect(screen.queryByTestId('root')).toBeInTheDocument;
+    expect(document.getElementById('root')).toBeInTheDocument;
   });
 });
