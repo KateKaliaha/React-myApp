@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/static/css/main.11cb500d.css",
-    "main.js": "/static/js/main.574f2a77.js",
-    "static/media/search.svg": "/static/media/search.bf83a24c74fc284242ff.svg",
-    "index.html": "/index.html",
-    "main.11cb500d.css.map": "/static/css/main.11cb500d.css.map",
-    "main.574f2a77.js.map": "/static/js/main.574f2a77.js.map"
+    "main.css": "//rolling-scopes-school.github.io/katekaliaha-REACT2022Q3/components/static/css/main.6630a9e6.css",
+    "main.js": "//rolling-scopes-school.github.io/katekaliaha-REACT2022Q3/components/static/js/main.574f2a77.js",
+    "static/media/search.svg": "//rolling-scopes-school.github.io/katekaliaha-REACT2022Q3/components/static/media/search.bf83a24c74fc284242ff.svg",
+    "index.html": "//rolling-scopes-school.github.io/katekaliaha-REACT2022Q3/components/index.html",
+    "main.6630a9e6.css.map": "//rolling-scopes-school.github.io/katekaliaha-REACT2022Q3/components/static/css/main.6630a9e6.css.map",
+    "main.574f2a77.js.map": "//rolling-scopes-school.github.io/katekaliaha-REACT2022Q3/components/static/js/main.574f2a77.js.map"
   },
   "entrypoints": [
-    "static/css/main.11cb500d.css",
+    "static/css/main.6630a9e6.css",
     "static/js/main.574f2a77.js"
   ]
 }
