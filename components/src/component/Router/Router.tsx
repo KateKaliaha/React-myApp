@@ -4,6 +4,7 @@ import { MainPage } from 'pages/MainPage/MainPage';
 import { AboutPage } from 'pages/AboutPage/AboutPage';
 import { ErrorPage } from 'pages/ErrorPage/ErrorPage';
 import { Layout } from 'component/Layout/Layout';
+import { FormPage } from 'pages/FormPage/FormPage';
 
 function RouterInApp() {
   return (
@@ -12,6 +13,7 @@ function RouterInApp() {
         <Route path="/" element={<Layout />}>
           <Route index element={<MainPage />}></Route>
           <Route path="/about" element={<AboutPage />}></Route>
+          <Route path="/form" element={<FormPage />}></Route>
           <Route path="*" element={<ErrorPage />}></Route>
         </Route>
       </Routes>
