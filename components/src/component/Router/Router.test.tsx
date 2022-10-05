@@ -13,7 +13,7 @@ describe('Router', () => {
     );
 
     const linkMain = screen.getByText(/Главная/i);
-    expect(linkMain).toBeInTheDocument;
+    expect(linkMain).toBeInTheDocument();
     const linkAbout = screen.getByText(/О нас/i);
     expect(linkAbout).toBeInTheDocument();
   });
@@ -29,12 +29,12 @@ describe('Router', () => {
 
     const linkAbout = screen.getByText(/О нас/i);
     userEvent.click(linkAbout);
-    expect(screen.getByText(/Добро пожаловать/i)).toBeInTheDocument;
-    expect(screen.findByPlaceholderText(/Поиск.../i)).not.toBeInTheDocument;
+    expect(screen.getByText(/Добро пожаловать/i)).toBeInTheDocument();
+    expect(screen.queryByPlaceholderText(/Поиск.../i)).not.toBeInTheDocument();
 
     userEvent.click(linkMain);
-    expect(screen.findByText(/Добро пожаловать/i)).not.toBeInTheDocument;
-    expect(screen.getByPlaceholderText(/Поиск.../i)).toBeInTheDocument;
+    expect(screen.queryByText(/Добро пожаловать/i)).not.toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/Поиск.../i)).toBeInTheDocument();
   });
 
   it('error page', () => {
@@ -44,6 +44,6 @@ describe('Router', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText(/404/i)).toBeInTheDocument;
+    expect(screen.getByText(/404/i)).toBeInTheDocument();
   });
 });

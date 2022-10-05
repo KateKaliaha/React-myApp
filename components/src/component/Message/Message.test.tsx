@@ -9,7 +9,7 @@ describe('SearchBar', () => {
     const message = screen.getByRole('heading');
     const messageValue = screen.getByText(/Извините, совпадений не найдено/i);
 
-    expect(message).toBeInTheDocument;
-    expect(messageValue).toBeInTheDocument;
+    expect(message).toBeInTheDocument();
+    expect(messageValue).toBeInTheDocument();
   });
 });
