@@ -11,7 +11,7 @@ function Navigation(): JSX.Element {
         О нас
       </NavLink>
       <NavLink to={'/form'} end>
-        Создать карточку
+        Отзыв
       </NavLink>
     </nav>
   );
