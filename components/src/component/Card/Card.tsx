@@ -21,7 +21,7 @@ function Card({ movie }: ICardProps): JSX.Element {
   return (
     <>
       <div className="card">
-        <img className="card-img" src={movie.poster_path}></img>
+        <img className="card-img" src={movie.poster_path} data-testid="img-card"></img>
         <h2 className="card-header">{movie.title}</h2>
         <div className="popular">
           <div className="rate-container">
