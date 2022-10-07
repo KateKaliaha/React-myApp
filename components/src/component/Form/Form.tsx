@@ -4,6 +4,17 @@ import './Form.css';
 type FormProps = Record<string, unknown>;
 type FormState = {
   disable: boolean;
+  isValid: boolean;
+  error: boolean;
+  errors: Errors;
+};
+
+type Errors = {
+  gender?: string;
+  name?: string;
+  surname?: string;
+  birthday?: string;
+  photo?: string;
 };
 
 class Form extends Component<FormProps, FormState> {
@@ -32,14 +43,18 @@ class Form extends Component<FormProps, FormState> {
     this.female = React.createRef();
     this.state = {
       disable: true,
+      isValid: true,
+      error: true,
+      errors: {},
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.unDisabledBtn = this.unDisabledBtn.bind(this);
     this.isValid = this.isValid.bind(this);
+    this.validateBirthdayDate = this.validateBirthdayDate.bind(this);
   }
 
-  handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = {
       name: (this.name?.current as HTMLInputElement).value,
@@ -53,18 +68,82 @@ class Form extends Component<FormProps, FormState> {
         ? (this.male?.current as HTMLInputElement).value
         : (this.female?.current as HTMLInputElement).value,
     };
-    console.log(data, this.state.disable);
+    await this.isValid();
+
+    console.log(data);
   }
 
   unDisabledBtn() {
     if (this.state.disable) {
       this.setState({ disable: false });
     }
-    // this.isValid();
   }
 
-  isValid(event: React.SyntheticEvent<HTMLInputElement>) {
-    console.log(event.currentTarget);
+  validateBirthdayDate(value: string) {
+    const minAgeUser = 7;
+    const birthdayDate = value.split('-');
+    const today = new Date();
+    if (+today.getFullYear() - minAgeUser <= +birthdayDate[0]) {
+      return false;
+    }
+    return true;
+  }
+
+  isValid() {
+    const errors: Record<string, string> = {};
+
+    if ((this.name?.current as HTMLInputElement).value.length < 2) {
+      errors.name = 'Имя должно содержать минимум 2 буквы';
+      this.setState({ isValid: false, error: false, errors: errors });
+      (this.name?.current as HTMLInputElement).value = '';
+    } else if (!/^[a-zа-яё]+$/i.test((this.name?.current as HTMLInputElement).value)) {
+      errors.name = 'Имя должно состоять только из букв';
+      this.setState({ isValid: false, error: false, errors: errors });
+      (this.name?.current as HTMLInputElement).value = '';
+    } else {
+      this.setState({ isValid: true, error: true, errors: errors });
+    }
+
+    if ((this.surname?.current as HTMLInputElement).value.length < 2) {
+      errors.surname = 'Фамилия должна содержать минимум 2 буквы';
+      this.setState({ isValid: false, error: false, errors: errors });
+      (this.surname?.current as HTMLInputElement).value = '';
+    } else if (!/^[a-zа-яё]+$/i.test((this.surname?.current as HTMLInputElement).value)) {
+      errors.surname = 'Фамилия должна состоять только из букв';
+      this.setState({ isValid: false, error: false, errors: errors });
+      (this.surname?.current as HTMLInputElement).value = '';
+    } else {
+      this.setState({ isValid: true, error: true, errors: errors });
+    }
+
+    if (
+      (this.male?.current as HTMLInputElement).checked === false &&
+      (this.female?.current as HTMLInputElement).checked === false
+    ) {
+      errors.gender = 'Выберите пол';
+      this.setState({ isValid: false, error: false, errors: errors });
+    } else {
+      this.setState({ isValid: true, error: true, errors: errors });
+    }
+
+    if ((this.birthday?.current as HTMLInputElement).value.length === 0) {
+      errors.birthday = 'Введите дату рождения';
+      this.setState({ isValid: false, error: false, errors: errors });
+    } else if (!this.validateBirthdayDate((this.birthday?.current as HTMLInputElement).value)) {
+      errors.birthday = 'Возраст должен быть больше 7';
+      this.setState({ isValid: false, error: false, errors: errors });
+    } else {
+      this.setState({ isValid: true, error: true, errors: errors });
+    }
+
+    if ((this.photo?.current as HTMLInputElement).value.length === 0) {
+      errors.photo = 'Загрузите фотографию';
+      this.setState({ isValid: false, error: false, errors: errors });
+    } else {
+      this.setState({ isValid: true, error: true, errors: errors });
+    }
+    // this.setState({ errors: errors });
+    // console.log(this.state, this.birthday);
   }
 
   render() {
@@ -73,14 +152,23 @@ class Form extends Component<FormProps, FormState> {
         <label>
           <p> Имя:</p>
           <input
-            className="input-form"
+            className={
+              this.state.errors.name?.length === 0 || this.state.errors.name === undefined
+                ? 'input-form'
+                : 'input-form-error'
+            }
             type="text"
             placeholder="Введите имя"
             data-testid={'name'}
             ref={this.name}
             onChange={this.unDisabledBtn}
           />
-          <div className="error">Error</div>
+          <div
+            // className="error"
+            className={this.state.errors.name?.length === 0 ? 'notVisible-error' : 'visible-error'}
+          >
+            {this.state.errors.name}
+          </div>
         </label>
 
         <label>
@@ -93,7 +181,13 @@ class Form extends Component<FormProps, FormState> {
             ref={this.surname}
             onChange={this.unDisabledBtn}
           />
-          <div className="error">Error</div>
+          <div
+            className={
+              this.state.errors.surname?.length === 0 ? 'notVisible-error' : 'visible-error'
+            }
+          >
+            {this.state.errors.surname}
+          </div>
         </label>
 
         <div className="custom-radio">
@@ -125,7 +219,11 @@ class Form extends Component<FormProps, FormState> {
             Женщина
           </label>
         </div>
-        <div className="error" />
+        <div
+          className={this.state.errors.gender?.length === 0 ? 'notVisible-error' : 'visible-error'}
+        >
+          {this.state.errors.gender}
+        </div>
         <label>
           <p> Дата рождения:</p>
           <input
@@ -135,7 +233,13 @@ class Form extends Component<FormProps, FormState> {
             ref={this.birthday}
             onChange={this.unDisabledBtn}
           />
-          <div className="error" />
+          <div
+            className={
+              this.state.errors.birthday?.length === 0 ? 'notVisible-error' : 'visible-error'
+            }
+          >
+            {this.state.errors.birthday}
+          </div>
         </label>
 
         <label>
@@ -147,7 +251,11 @@ class Form extends Component<FormProps, FormState> {
             ref={this.photo}
             onChange={this.unDisabledBtn}
           />
-          <div className="error" />
+          <div
+            className={this.state.errors.photo?.length === 0 ? 'notVisible-error' : 'visible-error'}
+          >
+            {this.state.errors.photo}
+          </div>
         </label>
 
         <label>
