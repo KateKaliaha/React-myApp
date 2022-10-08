@@ -1,0 +1,50 @@
+.review-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 22%;
+  height: 300px;
+  gap: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,.3);
+  padding: 10px;
+  overflow: auto;
+  font-size: 1rem;
+  color: #3f4348;
+}
+
+.review-img {
+  display: inline-block;
+  height: 30%;
+  border-radius: 8px;
+  align-self: center;
+}
+
+.review-mark,
+.review-person {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  align-self: center;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.review-mark {
+  font-size: 1.5rem;
+}
+
+.review-mark svg {
+color: #ccac00;
+height: 100%;
+}
+
+.review-person svg {
+  color: #46484a;
+  height: 100%;
+}
+
+.review {
+  height: 30%;
+}

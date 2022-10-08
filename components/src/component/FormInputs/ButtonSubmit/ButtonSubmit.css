@@ -1,0 +1,24 @@
+.submit {
+  margin: 0 auto;
+  justify-self: center;
+  width: 150px;
+  height: 50px;
+  border-radius: 8px;
+  color: #3f4348;
+  font-size: 1.3rem;
+  background-color: rgb(202, 75, 157);
+  cursor: pointer;
+}
+
+.submit:active {
+  transform: scale(0.9);
+  transition: 0.3s;
+  background-color: #e9e9e9;
+}
+
+.submit:disabled {
+  cursor: default;
+  background-color: rgb(210, 204, 208);
+  transition: none;
+  transform: none;
+}
