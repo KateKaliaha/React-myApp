@@ -1,0 +1,7 @@
+.error {
+  opacity: 1;
+  visibility: visible;
+  color: red;
+  font-size: 0.8rem;
+  height: 12px;
+}
