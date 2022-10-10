@@ -9,6 +9,7 @@ const DateInput = React.forwardRef<HTMLInputElement, InputProps>((props, ref) =>
       <p> Дата рождения:</p>
       <input
         className="date"
+        name="date"
         type="date"
         data-testid={'date'}
         ref={ref}

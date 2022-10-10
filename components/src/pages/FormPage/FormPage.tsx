@@ -14,16 +14,19 @@ class FormPage extends Component<FormPageProps, FormPageState> {
     this.changeStateCard = this.changeStateCard.bind(this);
   }
 
-  async changeStateCard(arr: IFormCard) {
-    await this.setState({ card: [...this.state.card, arr] });
+  changeStateCard(arr: IFormCard): void {
+    this.setState({ card: [...this.state.card, arr] });
+  }
+
+  componentWillUnmount(): void {
     localStorage.setItem('contentForm', JSON.stringify(this.state.card));
   }
 
-  render() {
+  render(): JSX.Element {
     return (
-      <div className="form-page">
+      <div className="form-page" data-testid="form-page">
         <Form changeCards={this.changeStateCard} />
-        <div className="form-content">
+        <div className="form-content" data-testid="form-content">
           {this.state.card.map((el, i) => (
             <FormCard key={i} card={el} />
           ))}

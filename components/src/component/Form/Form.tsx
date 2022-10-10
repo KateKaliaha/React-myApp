@@ -12,26 +12,19 @@ import React, { Component } from 'react';
 import './Form.css';
 
 class Form extends Component<FormProps, FormState> {
-  name: React.RefObject<HTMLInputElement> | null;
-  birthday: React.RefObject<HTMLInputElement> | null;
-  photo: React.RefObject<HTMLInputElement> | null;
-  review: React.RefObject<HTMLTextAreaElement> | null;
-  mark: React.RefObject<HTMLSelectElement> | null;
-  data: React.RefObject<HTMLInputElement> | null;
   male: React.RefObject<HTMLInputElement> | null;
   female: React.RefObject<HTMLInputElement> | null;
+  form: React.RefObject<HTMLFormElement>;
 
   constructor(props: FormProps) {
     super(props);
-    this.name = React.createRef();
-    this.birthday = React.createRef();
-    this.photo = React.createRef();
-    this.review = React.createRef();
-    this.mark = React.createRef();
-    this.data = React.createRef();
+    this.form = React.createRef<HTMLFormElement>();
     this.male = React.createRef();
     this.female = React.createRef();
     this.state = {
+      message: '',
+      firstChangeForm: false,
+      submit: false,
       disable: true,
       errors: {
         gender: '',
@@ -49,9 +42,16 @@ class Form extends Component<FormProps, FormState> {
     this.resetFormData = this.resetFormData.bind(this);
   }
 
-  async handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async handleSubmit(event: React.FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
+
+    if (this.state.submit === false) {
+      this.setState({ submit: true });
+    }
+
     await this.isValid();
+    await this.unDisabledBtn();
+
     if (
       this.state.errors.birthday?.length === 0 &&
       this.state.errors.data?.length === 0 &&
@@ -61,36 +61,57 @@ class Form extends Component<FormProps, FormState> {
       this.state.errors.photo?.length === 0 &&
       this.state.errors.review?.length === 0
     ) {
-      const files = (this.photo?.current as HTMLInputElement).files as FileList;
       const data = {
-        name: (this.name?.current as HTMLInputElement).value,
-        birthday: (this.birthday?.current as HTMLInputElement).value,
-        photo: URL.createObjectURL(files[0]),
-        review: (this.review?.current as HTMLTextAreaElement).value,
-        mark: (this.mark?.current as HTMLSelectElement).value,
-        data: (this.data?.current as HTMLInputElement).checked,
-        gender: (this.male?.current as HTMLInputElement).checked
-          ? (this.male?.current as HTMLInputElement).value
-          : (this.female?.current as HTMLInputElement).value,
+        name: (this.form.current!.name as unknown as HTMLInputElement).value,
+        birthday: (this.form.current!.date as unknown as HTMLInputElement).value,
+        photo: URL.createObjectURL(
+          ((this.form.current!.photo as unknown as HTMLInputElement).files as FileList)[0]
+        ),
+        review: (this.form.current!.textarea as unknown as HTMLTextAreaElement).value,
+        mark: (this.form.current!.mark as unknown as HTMLSelectElement).value,
+        data: (this.form.current!.data as unknown as HTMLInputElement).checked,
+        gender: (this.form.current!.gender as unknown as HTMLInputElement).value,
       };
-
-      this.props.changeCards(data);
-      this.resetFormData(event);
+      this.setState({ message: 'Отзыв сохранен успешно!!!' });
+      setTimeout(() => {
+        this.props.changeCards(data);
+        this.resetFormData(event);
+        this.setState({ message: '', submit: false, firstChangeForm: false });
+      }, 500);
     }
   }
 
-  unDisabledBtn() {
-    if (this.state.disable) {
-      this.setState({ disable: false });
+  async unDisabledBtn(): Promise<void> {
+    if (this.state.firstChangeForm === false && this.state.submit === false) {
+      this.setState({ disable: false, firstChangeForm: true });
+    } else if (this.state.submit === true) {
+      await this.isValid();
+
+      if (
+        this.state.errors.birthday?.length === 0 &&
+        this.state.errors.data?.length === 0 &&
+        this.state.errors.gender?.length === 0 &&
+        this.state.errors.mark?.length === 0 &&
+        this.state.errors.name?.length === 0 &&
+        this.state.errors.photo?.length === 0 &&
+        this.state.errors.review?.length === 0
+      ) {
+        this.setState({ disable: false });
+      } else {
+        this.setState({ disable: true });
+      }
     }
   }
 
-  resetFormData(event: React.FormEvent<HTMLFormElement>) {
+  resetFormData(event: React.FormEvent<HTMLFormElement>): void {
     (event.target as HTMLFormElement).reset();
+    (this.male?.current as HTMLInputElement).checked = false;
+    (this.female?.current as HTMLInputElement).checked = false;
+    (this.form.current!.data as unknown as HTMLInputElement).checked = false;
     this.setState({ disable: true });
   }
 
-  validateBirthdayDate(value: string) {
+  validateBirthdayDate(value: string): boolean {
     const minAgeUser = 7;
     const birthdayDate = value.split('-');
     const today = new Date();
@@ -100,8 +121,8 @@ class Form extends Component<FormProps, FormState> {
     return true;
   }
 
-  validateBirthdayInput(errors: Record<string, string>) {
-    let birthdayInput = (this.birthday?.current as HTMLInputElement).value;
+  validateBirthdayInput(errors: Record<string, string>): void {
+    let birthdayInput = (this.form.current!.date as unknown as HTMLInputElement).value;
     if (birthdayInput.length === 0) {
       errors.birthday = 'Введите дату рождения';
       birthdayInput = '';
@@ -114,8 +135,8 @@ class Form extends Component<FormProps, FormState> {
     this.setState({ errors: errors });
   }
 
-  validateInputName(errors: Record<string, string>) {
-    let nameInput = (this.name?.current as HTMLInputElement).value;
+  validateInputName(errors: Record<string, string>): void {
+    let nameInput = (this.form.current!.name as unknown as HTMLInputElement).value;
     const minLettersInWord = 2;
     if (nameInput.length < minLettersInWord) {
       errors.name = 'Имя должно содержать минимум 2 буквы';
@@ -129,11 +150,8 @@ class Form extends Component<FormProps, FormState> {
     this.setState({ errors: errors });
   }
 
-  validateGenderInput(errors: Record<string, string>) {
-    if (
-      (this.male?.current as HTMLInputElement).checked === false &&
-      (this.female?.current as HTMLInputElement).checked === false
-    ) {
+  validateGenderInput(errors: Record<string, string>): void {
+    if ((this.form.current!.gender as unknown as HTMLInputElement).value === '') {
       errors.gender = 'Выберите пол';
     } else {
       errors.gender = '';
@@ -141,10 +159,9 @@ class Form extends Component<FormProps, FormState> {
     this.setState({ errors: errors });
   }
 
-  validatePhotoInput(errors: Record<string, string>) {
-    if ((this.photo?.current as HTMLInputElement).value.length === 0) {
+  validatePhotoInput(errors: Record<string, string>): void {
+    if ((this.form.current!.photo as unknown as HTMLInputElement).value.length === 0) {
       errors.photo = 'Загрузите фотографию';
-      (this.photo?.current as HTMLInputElement).value = '';
     } else {
       errors.photo = '';
     }
@@ -152,7 +169,7 @@ class Form extends Component<FormProps, FormState> {
   }
 
   validateReviewInput(errors: Record<string, string>) {
-    let reviewInput = (this.review?.current as HTMLTextAreaElement).value;
+    let reviewInput = (this.form.current!.textarea as unknown as HTMLTextAreaElement).value;
     const minNumberSymbols = 10;
     if (reviewInput.length < minNumberSymbols) {
       errors.review = 'Отзыв должен содержать минимум 10 символов';
@@ -163,8 +180,8 @@ class Form extends Component<FormProps, FormState> {
     this.setState({ errors: errors });
   }
 
-  validateMarkInput(errors: Record<string, string>) {
-    if ((this.mark?.current as HTMLSelectElement).value === '') {
+  validateMarkInput(errors: Record<string, string>): void {
+    if ((this.form.current!.mark as unknown as HTMLSelectElement).value === '') {
       errors.mark = 'Выберите оценку';
     } else {
       errors.mark = '';
@@ -172,8 +189,8 @@ class Form extends Component<FormProps, FormState> {
     this.setState({ errors: errors });
   }
 
-  validateDataCheckbox(errors: Record<string, string>) {
-    if ((this.data?.current as HTMLInputElement).checked === false) {
+  validateDataCheckbox(errors: Record<string, string>): void {
+    if ((this.form.current!.data as unknown as HTMLInputElement).checked === false) {
       errors.data = 'Необходимо дать согласие на обработку персональных данных';
     } else {
       errors.data = '';
@@ -181,7 +198,7 @@ class Form extends Component<FormProps, FormState> {
     this.setState({ errors: errors });
   }
 
-  isValid() {
+  isValid(): void {
     const errors: Record<string, string> = {};
 
     this.validateInputName(errors);
@@ -193,57 +210,54 @@ class Form extends Component<FormProps, FormState> {
     this.validateDataCheckbox(errors);
   }
 
-  render() {
+  render(): JSX.Element {
     return (
-      <form className="form" data-testid={'form'} onSubmit={this.handleSubmit}>
-        <NameInput
-          attr={{ changeInput: this.unDisabledBtn, err: this.state.errors.name as string }}
-          ref={this.name}
-        />
-        <div className="custom-radio">
-          <p>Выберите пол: </p>
-          <RadioInput
-            attr={{
-              changeInput: this.unDisabledBtn,
-              err: this.state.errors.gender as string,
-              gender: 'Мужчина',
-              genderValue: 'male',
-            }}
-            ref={this.male}
+      <>
+        <form className="form" data-testid={'form'} onSubmit={this.handleSubmit} ref={this.form}>
+          <NameInput
+            attr={{ changeInput: this.unDisabledBtn, err: this.state.errors.name as string }}
           />
-          <RadioInput
-            attr={{
-              changeInput: this.unDisabledBtn,
-              err: this.state.errors.gender as string,
-              gender: 'Женщина',
-              genderValue: 'female',
-            }}
-            ref={this.female}
+          <div className="custom-radio">
+            <p>Выберите пол: </p>
+            <RadioInput
+              attr={{
+                changeInput: this.unDisabledBtn,
+                err: this.state.errors.gender as string,
+                gender: 'Мужчина',
+                genderValue: 'male',
+              }}
+              ref={this.male}
+            />
+            <RadioInput
+              attr={{
+                changeInput: this.unDisabledBtn,
+                err: this.state.errors.gender as string,
+                gender: 'Женщина',
+                genderValue: 'female',
+              }}
+              ref={this.female}
+            />
+            <ErrorMessage>{this.state.errors.gender as string}</ErrorMessage>
+          </div>
+          <DateInput
+            attr={{ changeInput: this.unDisabledBtn, err: this.state.errors.birthday as string }}
           />
-          <ErrorMessage>{this.state.errors.gender as string}</ErrorMessage>
-        </div>
-        <DateInput
-          attr={{ changeInput: this.unDisabledBtn, err: this.state.errors.birthday as string }}
-          ref={this.birthday}
-        />
-        <FileInput
-          attr={{ changeInput: this.unDisabledBtn, err: this.state.errors.photo as string }}
-          ref={this.photo}
-        />
-        <TextAreaInput
-          attr={{ changeTextArea: this.unDisabledBtn, err: this.state.errors.review as string }}
-          ref={this.review}
-        />
-        <SelectInput
-          attr={{ changeSelect: this.unDisabledBtn, err: this.state.errors.mark as string }}
-          ref={this.mark}
-        />
-        <CheckboxInput
-          attr={{ changeInput: this.unDisabledBtn, err: this.state.errors.data as string }}
-          ref={this.data}
-        />
-        <ButtonSubmit disabled={this.state.disable} />
-      </form>
+          <FileInput
+            attr={{ changeInput: this.unDisabledBtn, err: this.state.errors.photo as string }}
+          />
+          <TextAreaInput
+            attr={{ changeTextArea: this.unDisabledBtn, err: this.state.errors.review as string }}
+          />
+          <SelectInput
+            attr={{ changeSelect: this.unDisabledBtn, err: this.state.errors.mark as string }}
+          />
+          <CheckboxInput
+            attr={{ changeInput: this.unDisabledBtn, err: this.state.errors.data as string }}
+          />
+          <ButtonSubmit disabled={this.state.disable} />
+        </form>
+        <div className="message-success">{this.state.message}</div>
+      </>
     );
   }
 }

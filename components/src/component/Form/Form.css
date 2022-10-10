@@ -18,3 +18,11 @@
   margin: 0;
   margin-bottom: 7px;
 }
+
+.message-success {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  color: #3f4348;
+  height: 20px;
+}

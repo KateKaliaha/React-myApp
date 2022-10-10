@@ -10,6 +10,7 @@ const SelectInput = React.forwardRef<HTMLSelectElement, InputProps>((props, ref)
       <select
         className="select-form"
         data-testid={'mark'}
+        name="mark"
         ref={ref}
         onChange={props.attr.changeSelect}
       >
