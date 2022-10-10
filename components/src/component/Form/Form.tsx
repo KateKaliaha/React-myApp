@@ -72,6 +72,7 @@ class Form extends Component<FormProps, FormState> {
         data: (this.form.current!.data as unknown as HTMLInputElement).checked,
         gender: (this.form.current!.gender as unknown as HTMLInputElement).value,
       };
+
       this.setState({ message: 'Отзыв сохранен успешно!!!' });
       setTimeout(() => {
         this.props.changeCards(data);
