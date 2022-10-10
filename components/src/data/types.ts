@@ -15,6 +15,9 @@ export type FormCardProps = Record<string, IFormCard>;
 export type FormProps = Record<string, (arr: IFormCard) => void>;
 
 export type FormState = {
+  message: string;
+  firstChangeForm: boolean;
+  submit: boolean;
   disable: boolean;
   errors: Errors;
 };

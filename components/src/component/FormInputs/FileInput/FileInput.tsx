@@ -11,6 +11,7 @@ const FileInput = React.forwardRef<HTMLInputElement, InputProps>((props, ref) =>
         type="file"
         data-testid={'photo'}
         accept="image/*"
+        name="photo"
         ref={ref}
         onChange={props.attr.changeInput}
       />

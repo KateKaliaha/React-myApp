@@ -12,6 +12,7 @@ const NameInput = React.forwardRef<HTMLInputElement, InputProps>((props, ref) =>
         type="text"
         placeholder="Введите имя"
         data-testid={'name'}
+        name="name"
         ref={ref}
         onChange={props.attr.changeInput}
       />

@@ -10,6 +10,7 @@ const TextAreaInput = React.forwardRef<HTMLTextAreaElement, InputProps>((props, 
       <textarea
         data-testid={'textarea'}
         className="textarea"
+        name="textarea"
         ref={ref}
         onChange={props.attr.changeTextArea}
       />

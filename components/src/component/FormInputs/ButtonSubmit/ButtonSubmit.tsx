@@ -7,7 +7,7 @@ class ButtonSubmit extends React.Component<BtnSubmitProps> {
     super(props);
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <button
         type={'submit'}
