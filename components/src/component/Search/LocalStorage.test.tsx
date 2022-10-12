@@ -90,5 +90,6 @@ describe('Search and localstorage', () => {
 
     userEvent.click(linkMain);
     expect(screen.getByPlaceholderText(/Поиск.../i)).toHaveValue('456');
+    expect(window.localStorage.getItem('value')).toEqual('456');
   });
 });

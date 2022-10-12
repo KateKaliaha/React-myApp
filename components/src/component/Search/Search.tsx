@@ -13,11 +13,17 @@ class Search extends React.Component<SearchProps, SearchState> {
       value: localStorage.getItem('value') ? (localStorage.getItem('value') as string) : '',
     };
     this.handleChange = this.handleChange.bind(this);
+    this.keyDown = this.keyDown.bind(this);
   }
 
   handleChange(event: React.FormEvent) {
     this.setState({ value: (event.target as HTMLInputElement).value });
-    this.props.filter((event.target as HTMLInputElement).value);
+  }
+
+  async keyDown(event: React.KeyboardEvent) {
+    if (event.key === 'Enter' && this.state.value !== '') {
+      await this.props.getSearchCardList((event.target as HTMLInputElement).value);
+    }
   }
 
   componentWillUnmount(): void {
@@ -31,6 +37,7 @@ class Search extends React.Component<SearchProps, SearchState> {
         id="search"
         type="search"
         onChange={this.handleChange}
+        onKeyDown={this.keyDown}
         value={this.state.value}
         placeholder="Поиск..."
       ></input>
