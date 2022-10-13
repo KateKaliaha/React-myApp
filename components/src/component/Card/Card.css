@@ -6,6 +6,7 @@
   width: 21%;
   margin-bottom: 20px;
   background-color: aliceblue;
+  cursor: pointer;
 }
 
 .card:hover {

@@ -1,4 +1,4 @@
-import { IFormCard } from './interfaces';
+import { ICardApi, IFormCard } from './interfaces';
 
 export type FormPageState = {
   card: IFormCard[];
@@ -46,3 +46,31 @@ export type InputProps = {
 };
 
 export type BtnSubmitProps = Record<string, boolean>;
+
+export type CardsState = {
+  data: ICardApi[];
+  modalActive: boolean;
+  card: ICardApi | undefined;
+};
+
+export type CardsProps = Record<string, unknown>;
+
+export type ModalWindowProps = {
+  active: boolean;
+  movie: ICardApi;
+  closeModalWindow: () => void;
+};
+
+export type ModalWindowState = {
+  data: ICardApi[];
+};
+
+export type PopularContentProps = {
+  names: string[];
+  movie: ICardApi;
+};
+
+export type CardListProps = {
+  data: ICardApi[];
+  openModalWindow: (event: React.MouseEvent<Element, MouseEvent>) => void;
+};
