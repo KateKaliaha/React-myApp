@@ -1,8 +1,9 @@
 import { PopularContent } from 'component/UI/PopularContent/PopularContent';
 import { ICardProps } from 'data/interfaces';
 import React from 'react';
+import './ModalCard.css';
 
-function Card({ movie }: ICardProps): JSX.Element {
+function ModalCard({ movie }: ICardProps) {
   const IMG_PATH = 'https://image.tmdb.org/t/p/w500';
   let imgSRC = '';
   const PathToNotFoundImage =
@@ -13,17 +14,27 @@ function Card({ movie }: ICardProps): JSX.Element {
   } else {
     imgSRC = `${IMG_PATH + movie.poster_path}`;
   }
-  const nameClasses = ['rate-container', 'like-container'];
+  const nameClasses = ['modal-rate-container', 'modal-like-container'];
 
   return (
-    <>
-      <div className="card" id={movie.id + ''}>
-        <img className="card-img" src={imgSRC} data-testid="img-card"></img>
-        <h2 className="card-header">{movie.title}</h2>
-        <PopularContent names={nameClasses} movie={movie} />
+    <div className="modal-content">
+      <div className="modal-header-wrapper">
+        <img className="modal-card-img" src={imgSRC} data-testid="modal-img-card"></img>
+        <div className="modal-header-content">
+          <p className="movie-name">{movie.title}</p>
+          <PopularContent names={nameClasses} movie={movie} />
+        </div>
       </div>
-    </>
+
+      <div className="modal-content-overview">{movie.overview}</div>
+      <div className="modal-content-description">
+        <p>Оригинальное название: {movie.original_title}</p>
+        <p>Оригинальный язык: {movie.original_language}</p>
+        <p>Дата релиза: {movie.release_date}</p>
+        <p>Возраст просмотра: {movie.adult ? 'c 18 лет' : 'c 5 лет'}</p>
+      </div>
+    </div>
   );
 }
 
-export { Card };
+export { ModalCard };

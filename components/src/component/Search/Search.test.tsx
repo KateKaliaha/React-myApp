@@ -6,6 +6,7 @@ import { Search } from 'component/Search/Search';
 import React from 'react';
 
 const handleChange = jest.fn();
+const openModalWindow = jest.fn();
 const filterCardList = jest.fn();
 const moviesArray = [
   {
@@ -120,6 +121,7 @@ describe('SearchBar', () => {
         <input placeholder="Поиск..." value="Выш" onChange={handleChange} />
         {moviesArray.length > 0 && (
           <CardList
+            openModalWindow={openModalWindow}
             data={value.length ? moviesArray.filter((el) => el.title.includes(value)) : moviesArray}
           />
         )}
@@ -139,6 +141,7 @@ describe('SearchBar', () => {
         <input placeholder="Поиск..." value="Выш" onChange={handleChange} />
         {moviesArray.length > 0 && (
           <CardList
+            openModalWindow={openModalWindow}
             data={value.length ? moviesArray.filter((el) => el.title.includes(value)) : moviesArray}
           />
         )}
@@ -156,7 +159,9 @@ describe('SearchBar', () => {
     moviesArray.length = 0;
     render(
       <div className="main-page">
-        {moviesArray.length > 0 && <CardList data={moviesArray} />}
+        {moviesArray.length > 0 && (
+          <CardList openModalWindow={openModalWindow} data={moviesArray} />
+        )}
         {moviesArray.length === 0 && <Message />}
       </div>
     );
