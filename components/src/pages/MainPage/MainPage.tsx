@@ -5,6 +5,7 @@ import { Message } from 'component/Message/Message';
 import { ICardApi, IResponse } from 'data/interfaces';
 import { CardsProps, CardsState } from 'data/types';
 import { ModalWindow } from 'component/ModalWindow/ModalWindow';
+import { Loader } from 'component/UI/Loader/Loader';
 
 const PATH = 'https://api.themoviedb.org/3/';
 const API_KEY = 'api_key=9c5e0f16891cead9f73032e139a5c245';
@@ -20,6 +21,7 @@ class MainPage extends Component<CardsProps, CardsState> {
       data: [],
       modalActive: false,
       card: undefined,
+      isFetching: false,
     };
     this.getSearchCardList = this.getSearchCardList.bind(this);
     this.openModalWindow = this.openModalWindow.bind(this);
@@ -28,11 +30,13 @@ class MainPage extends Component<CardsProps, CardsState> {
 
   async componentDidMount(): Promise<void> {
     const localValue = localStorage.getItem('value') as string;
+    await this.setState({ isFetching: true });
     if (localValue) {
       await this.getApiData('search', `query=${localValue}&page=${this.page}`);
     } else {
       await this.getApiData('discover', `page=${this.page}`);
     }
+    await this.setState({ isFetching: false });
   }
 
   async getApiData(param: string, value: string) {
@@ -58,30 +62,36 @@ class MainPage extends Component<CardsProps, CardsState> {
   }
 
   async getSearchCardList(value: string) {
+    await this.setState({ isFetching: true });
     await this.getApiData('search', `query=${value}&page=${this.page}`);
+    await this.setState({ isFetching: false });
   }
 
-  async openModalWindow(event: React.MouseEvent): Promise<void> {
+  openModalWindow(event: React.MouseEvent): void {
     const id = +((event.target as HTMLElement).closest('.card')?.getAttribute('id') as string);
     if (id) {
       const card = this.state.data.find((el) => el.id === id);
 
-      await this.setState({ modalActive: true, card: card });
+      this.setState({ modalActive: true, card: card });
     }
   }
 
-  async closeModalWindow(): Promise<void> {
-    await this.setState({ modalActive: false });
+  closeModalWindow(): void {
+    this.setState({ modalActive: false });
   }
 
   render() {
     return (
       <div className="main-page">
         <Search getSearchCardList={this.getSearchCardList} />
-        {this.state.data.length > 0 && (
-          <CardList data={this.state.data} openModalWindow={this.openModalWindow} />
+        {this.state.isFetching ? (
+          <Loader />
+        ) : (
+          this.state.data.length > 0 && (
+            <CardList data={this.state.data} openModalWindow={this.openModalWindow} />
+          )
         )}
-        {this.state.data.length === 0 && <Message />}
+        {this.state.data.length === 0 && !this.state.isFetching && <Message />}
         {this.state.modalActive && (
           <ModalWindow
             active={this.state.modalActive}
