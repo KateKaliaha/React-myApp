@@ -71,6 +71,10 @@ describe('localStorage', () => {
 });
 
 describe('Search and localstorage', () => {
+  beforeEach(() => {
+    window.localStorage.clear();
+  });
+
   it('input value after change pages', () => {
     render(
       <BrowserRouter>

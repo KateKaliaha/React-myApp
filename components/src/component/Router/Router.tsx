@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { MainPage } from 'pages/MainPage/MainPage';
+import MainPage from 'pages/MainPage/MainPage';
+// import { MainPage } from 'pages/MainPage/MainPage';
 import { AboutPage } from 'pages/AboutPage/AboutPage';
 import { ErrorPage } from 'pages/ErrorPage/ErrorPage';
 import { Layout } from 'component/Layout/Layout';

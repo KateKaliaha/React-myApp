@@ -10,8 +10,9 @@ describe('App', () => {
         <App />
       </BrowserRouter>
     );
-    const img = screen.getAllByTestId('img-card');
-    expect(img.length).toBe(12);
+
+    const img = screen.queryAllByTestId('img-card');
+    expect(img.length).toBe(0);
     expect(screen.queryByTestId('root')).not.toBeInTheDocument();
   });
 });

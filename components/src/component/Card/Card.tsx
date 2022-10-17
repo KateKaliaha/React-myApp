@@ -17,7 +17,7 @@ function Card({ movie }: ICardProps): JSX.Element {
 
   return (
     <>
-      <div className="card" id={movie.id + ''}>
+      <div className="card" id={movie.id + ''} data-testid="card">
         <img className="card-img" src={imgSRC} data-testid="img-card"></img>
         <h2 className="card-header">{movie.title}</h2>
         <PopularContent names={nameClasses} movie={movie} />
