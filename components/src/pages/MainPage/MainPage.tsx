@@ -7,9 +7,11 @@ import { CardsProps, CardsState } from 'data/types';
 import { ModalWindow } from 'component/ModalWindow/ModalWindow';
 import { Loader } from 'component/UI/Loader/Loader';
 
-const PATH = 'https://api.themoviedb.org/3/';
-const API_KEY = 'api_key=9c5e0f16891cead9f73032e139a5c245';
-const LANG_API_RESPONSE = 'ru-Ru';
+export const PATH_SEARCH =
+  'https://api.themoviedb.org/3/search/movie?api_key=9c5e0f16891cead9f73032e139a5c245&language=ru-Ru';
+
+export const PATH_DISCOVER =
+  'https://api.themoviedb.org/3/discover/movie?api_key=9c5e0f16891cead9f73032e139a5c245&language=ru-Ru';
 
 class MainPage extends Component<CardsProps, CardsState> {
   page: number;
@@ -22,48 +24,55 @@ class MainPage extends Component<CardsProps, CardsState> {
       modalActive: false,
       card: undefined,
       isFetching: false,
+      value: localStorage.getItem('value') ? localStorage.getItem('value') : null,
     };
     this.getSearchCardList = this.getSearchCardList.bind(this);
     this.openModalWindow = this.openModalWindow.bind(this);
     this.closeModalWindow = this.closeModalWindow.bind(this);
+    this.fetchPromiseStartPage = this.fetchPromiseStartPage.bind(this);
   }
 
   async componentDidMount(): Promise<void> {
-    const localValue = localStorage.getItem('value') as string;
     await this.setState({ isFetching: true });
-    if (localValue) {
-      await this.getApiData('search', `query=${localValue}&page=${this.page}`);
-    } else {
-      await this.getApiData('discover', `page=${this.page}`);
-    }
+    await this.fetchPromiseStartPage();
     await this.setState({ isFetching: false });
   }
 
-  async getApiData(param: string, value: string) {
-    await fetch(`${PATH}${param}/movie?${API_KEY}&language=${LANG_API_RESPONSE}&${value}`)
-      .then((resp) => {
-        if (resp.ok) {
+  async fetchPromiseStartPage() {
+    if (this.state.value !== null) {
+      await fetch(`${PATH_SEARCH}&query=${this.state.value}&page=${this.page}`)
+        .then((resp) => {
           return resp.json() as Promise<IResponse>;
-        }
-        throw resp;
-      })
-      .then((data) => {
-        if (param === 'search') {
-          const valueForFilter = value.split('&')[0].split('=')[1];
+        })
+        .then((data) => {
           const filterData = data.results.filter((movie) =>
-            movie.title.toLowerCase().includes(valueForFilter.toLowerCase())
+            movie.title.toLowerCase().includes((this.state.value as string).toLowerCase())
           );
-          this.setState({ data: [...filterData] });
-        } else {
-          this.setState({ data: [...data.results] });
-        }
-      })
-      .catch((error) => console.error(error));
+          this.setState({ data: filterData });
+        });
+    } else {
+      await fetch(`${PATH_DISCOVER}`)
+        .then((resp) => {
+          return resp.json() as Promise<IResponse>;
+        })
+        .then((data) => {
+          this.setState({ data: data.results });
+        });
+    }
   }
 
-  async getSearchCardList(value: string) {
+  async getSearchCardList(value: string): Promise<void> {
     await this.setState({ isFetching: true });
-    await this.getApiData('search', `query=${value}&page=${this.page}`);
+    await fetch(`${PATH_SEARCH}&query=${value}&page=${this.page}`)
+      .then((resp) => {
+        return resp.json() as Promise<IResponse>;
+      })
+      .then((data) => {
+        const filterData = data.results.filter((movie) =>
+          movie.title.toLowerCase().includes(value.toLowerCase())
+        );
+        this.setState({ data: filterData });
+      });
     await this.setState({ isFetching: false });
   }
 
@@ -71,7 +80,6 @@ class MainPage extends Component<CardsProps, CardsState> {
     const id = +((event.target as HTMLElement).closest('.card')?.getAttribute('id') as string);
     if (id) {
       const card = this.state.data.find((el) => el.id === id);
-
       this.setState({ modalActive: true, card: card });
     }
   }
@@ -80,7 +88,7 @@ class MainPage extends Component<CardsProps, CardsState> {
     this.setState({ modalActive: false });
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <div className="main-page">
         <Search getSearchCardList={this.getSearchCardList} />
@@ -104,4 +112,4 @@ class MainPage extends Component<CardsProps, CardsState> {
   }
 }
 
-export { MainPage };
+export default MainPage;

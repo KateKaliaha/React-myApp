@@ -1,24 +1,19 @@
-import { render, screen } from '@testing-library/react';
+import { render, act, screen, fireEvent, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { CardList } from 'component/CardList/CardList';
-import { Message } from 'component/Message/Message';
-import { Search } from 'component/Search/Search';
 import React from 'react';
+import MainPage from './MainPage';
 
-const handleChange = jest.fn();
-const openModalWindow = jest.fn();
-const filterCardList = jest.fn();
-const moviesArray = [
+const fakeMoviesArray = [
   {
     adult: false,
-    backdrop_path: '/96UkPWauvnt98M95880bgVAi9DV.jpg',
+    backdrop_path: null,
     genre_ids: [18, 80],
     id: 1021735,
     original_language: 'ky',
     original_title: 'Продаётся дом',
     overview: ' ',
     popularity: 13.025,
-    poster_path: '/1OUUMCyJEWSq4mwb342A5jjU14a.jpg',
+    poster_path: null,
     release_date: '2022-10-10',
     title: 'Продаётся дом',
     video: false,
@@ -78,96 +73,114 @@ const moviesArray = [
   },
 ];
 
-describe('SearchBar', () => {
-  it('render search component', () => {
-    render(<Search />);
+const localStorageMock = (function () {
+  let store: Record<string, string> = {};
 
-    const input = screen.getByPlaceholderText(/Поиск.../i);
+  return {
+    getItem(key: string) {
+      return store[key];
+    },
 
-    expect(input).toBeInTheDocument;
+    setItem(key: string, value: string) {
+      store[key] = value;
+    },
+
+    clear() {
+      store = {};
+    },
+
+    removeItem(key: string) {
+      delete store[key];
+    },
+
+    getAll() {
+      return store;
+    },
+  };
+})();
+
+Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+
+describe('MainPage:', () => {
+  beforeEach(() => {
+    window.localStorage.clear();
+    const mockJsonPromise = Promise.resolve({
+      page: 0,
+      results: [...fakeMoviesArray],
+      total_pages: 9,
+      total_results: 174,
+    });
+    const mockFetchPromise = Promise.resolve({
+      json: () => mockJsonPromise,
+    });
+    global.fetch = jest.fn().mockImplementation(() => mockFetchPromise) as jest.Mock;
   });
 
-  it('input focus', () => {
-    render(<Search />);
+  test('render component with value in localstorage, click on card and check open and close modal window', async () => {
+    const spyDidMount = jest.spyOn(MainPage.prototype, 'componentDidMount');
+    const spyOpenModalWindow = jest.spyOn(MainPage.prototype, 'openModalWindow');
+    const spyCloseModalWindow = jest.spyOn(MainPage.prototype, 'closeModalWindow');
+    const fetchPromiseStartPage = jest.spyOn(MainPage.prototype, 'fetchPromiseStartPage');
+    localStorageMock.setItem('value', 'дом');
 
-    const input = screen.getByPlaceholderText(/Поиск.../i);
+    await act(async () => {
+      render(<MainPage />);
+    });
 
-    expect(input).not.toHaveFocus;
-    input.focus();
-    expect(input).toHaveFocus;
+    await expect((await screen.findAllByRole('img')).length).toBe(4);
+    expect(spyDidMount).toHaveBeenCalledTimes(1);
+    expect(fetchPromiseStartPage).toHaveBeenCalled();
+
+    const card = screen.queryAllByTestId('card');
+
+    await act(async () => {
+      await userEvent.click(card[0]);
+    });
+
+    expect(spyOpenModalWindow).toHaveBeenCalled();
+
+    const modal = screen.getByTestId('modal');
+    expect(modal.classList.contains('active-modal'));
+
+    const btnClose = screen.getByTestId('close-btn');
+
+    await act(async () => {
+      await userEvent.click(btnClose);
+    });
+
+    expect(spyCloseModalWindow).toHaveBeenCalled();
   });
 
-  it('handleChange works', () => {
-    render(<input placeholder="Поиск..." onChange={handleChange} />);
+  test('render component without value in localstorage', async () => {
+    const mockMainPage = new MainPage({});
+    const spyDidMount = jest.spyOn(MainPage.prototype, 'componentDidMount');
 
-    userEvent.type(screen.getByPlaceholderText(/Поиск.../i), 'пи');
+    await act(async () => {
+      render(<MainPage />);
+    });
 
-    expect(handleChange).toHaveBeenCalledTimes(2);
+    expect(mockMainPage.state.value).toBeNull();
+    expect(spyDidMount).toHaveBeenCalledTimes(1);
   });
 
-  it('typing in Search works', () => {
-    render(<Search filter={filterCardList} />);
+  it('check working method getSearchCardList after keydown "Enter" in searchinput', async () => {
+    const mockMainPage = new MainPage({});
+    const spyGetSearchCardList = jest.spyOn(MainPage.prototype, 'getSearchCardList');
 
-    expect(screen.queryByDisplayValue(/пи/)).toBeNull();
-    userEvent.type(screen.getByPlaceholderText(/Поиск.../i), 'пи');
+    await act(async () => {
+      render(<MainPage />);
+    });
 
-    expect(screen.queryByDisplayValue(/пи/)).toBeInTheDocument();
-  });
+    expect(mockMainPage.state.value).toBeNull();
+    expect(spyGetSearchCardList).toHaveBeenCalledTimes(0);
 
-  it('filter is working, render CardList', () => {
-    const value = 'Выш';
-    render(
-      <div className="main-page">
-        <input placeholder="Поиск..." value="Выш" onChange={handleChange} />
-        {moviesArray.length > 0 && (
-          <CardList
-            openModalWindow={openModalWindow}
-            data={value.length ? moviesArray.filter((el) => el.title.includes(value)) : moviesArray}
-          />
-        )}
-        {moviesArray.length === 0 && <Message />}
-      </div>
-    );
+    const input = screen.getByRole('searchbox');
 
-    userEvent.type(screen.getByPlaceholderText(/Поиск.../i), 'Выш');
+    await act(async () => {
+      await userEvent.type(input, 'дом');
+      await fireEvent.keyDown(input, { keyCode: 13 });
+    });
 
-    expect(screen.queryByText(/пиноккио/i)).toBeNull();
-  });
-
-  it('filter is working, empty cards', () => {
-    const value = 'алхимик';
-    render(
-      <div className="main-page">
-        <input placeholder="Поиск..." value="Выш" onChange={handleChange} />
-        {moviesArray.length > 0 && (
-          <CardList
-            openModalWindow={openModalWindow}
-            data={value.length ? moviesArray.filter((el) => el.title.includes(value)) : moviesArray}
-          />
-        )}
-        {moviesArray.length === 0 && <Message />}
-      </div>
-    );
-
-    userEvent.type(screen.getByPlaceholderText(/Поиск.../i), 'алхимик');
-    expect(screen.queryByText(/вышка/i)).toBeNull();
-    expect(screen.queryByText(/пиноккио/i)).toBeNull();
-    expect(screen.queryByText(/Дитя тьмы/i)).toBeNull();
-  });
-
-  it('filter is working, render Message', () => {
-    moviesArray.length = 0;
-    render(
-      <div className="main-page">
-        {moviesArray.length > 0 && (
-          <CardList openModalWindow={openModalWindow} data={moviesArray} />
-        )}
-        {moviesArray.length === 0 && <Message />}
-      </div>
-    );
-
-    expect(screen.queryByText(/вышка/i)).toBeNull();
-    expect(screen.queryByText(/пиноккио/i)).toBeNull();
-    expect(screen.getByText(/Извините/i)).toBeInTheDocument();
+    expect(spyGetSearchCardList).toBeCalled();
   });
 });

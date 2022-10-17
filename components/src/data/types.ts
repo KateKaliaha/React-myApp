@@ -52,6 +52,7 @@ export type CardsState = {
   modalActive: boolean;
   card: ICardApi | undefined;
   isFetching: boolean;
+  value: string | null;
 };
 
 export type CardsProps = Record<string, unknown>;
