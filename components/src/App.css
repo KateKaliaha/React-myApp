@@ -6,6 +6,15 @@
 @import './component/Message/Message.css';
 @import './pages/AboutPage/About.css';
 @import './pages/ErrorPage/Error.css';
+@import './pages/FormPage/FormPage.css';
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
 
 * {
   box-sizing: border-box;
