@@ -52,15 +52,9 @@ class Form extends Component<FormProps, FormState> {
     await this.isValid();
     await this.unDisabledBtn();
 
-    if (
-      this.state.errors.birthday?.length === 0 &&
-      this.state.errors.data?.length === 0 &&
-      this.state.errors.gender?.length === 0 &&
-      this.state.errors.mark?.length === 0 &&
-      this.state.errors.name?.length === 0 &&
-      this.state.errors.photo?.length === 0 &&
-      this.state.errors.review?.length === 0
-    ) {
+    const absenceErrors = this.checkAbsenceErrors();
+
+    if (absenceErrors) {
       const data = {
         name: (this.form.current!.name as unknown as HTMLInputElement).value,
         birthday: (this.form.current!.date as unknown as HTMLInputElement).value,
@@ -82,21 +76,22 @@ class Form extends Component<FormProps, FormState> {
     }
   }
 
+  checkAbsenceErrors() {
+    const errors = Object.values(this.state.errors);
+    const absenceErrors = errors.every((error) => error.length === 0);
+
+    return absenceErrors;
+  }
+
   async unDisabledBtn(): Promise<void> {
     if (this.state.firstChangeForm === false && this.state.submit === false) {
       this.setState({ disable: false, firstChangeForm: true });
     } else if (this.state.submit === true) {
       await this.isValid();
 
-      if (
-        this.state.errors.birthday?.length === 0 &&
-        this.state.errors.data?.length === 0 &&
-        this.state.errors.gender?.length === 0 &&
-        this.state.errors.mark?.length === 0 &&
-        this.state.errors.name?.length === 0 &&
-        this.state.errors.photo?.length === 0 &&
-        this.state.errors.review?.length === 0
-      ) {
+      const absenceErrors = this.checkAbsenceErrors();
+
+      if (absenceErrors) {
         this.setState({ disable: false });
       } else {
         this.setState({ disable: true });
