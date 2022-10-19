@@ -38,7 +38,7 @@ class Form extends Component<FormProps, FormState> {
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.unDisabledBtn = this.unDisabledBtn.bind(this);
+    this.unlockButton = this.unlockButton.bind(this);
     this.resetFormData = this.resetFormData.bind(this);
   }
 
@@ -50,7 +50,7 @@ class Form extends Component<FormProps, FormState> {
     }
 
     await this.isValid();
-    await this.unDisabledBtn();
+    await this.unlockButton();
 
     const absenceErrors = this.checkAbsenceErrors();
 
@@ -83,7 +83,7 @@ class Form extends Component<FormProps, FormState> {
     return absenceErrors;
   }
 
-  async unDisabledBtn(): Promise<void> {
+  async unlockButton(): Promise<void> {
     if (this.state.firstChangeForm === false && this.state.submit === false) {
       this.setState({ disable: false, firstChangeForm: true });
     } else if (this.state.submit === true) {
@@ -211,13 +211,13 @@ class Form extends Component<FormProps, FormState> {
       <>
         <form className="form" data-testid={'form'} onSubmit={this.handleSubmit} ref={this.form}>
           <NameInput
-            attr={{ changeInput: this.unDisabledBtn, err: this.state.errors.name as string }}
+            attr={{ changeInput: this.unlockButton, err: this.state.errors.name as string }}
           />
           <div className="custom-radio">
             <p>Выберите пол: </p>
             <RadioInput
               attr={{
-                changeInput: this.unDisabledBtn,
+                changeInput: this.unlockButton,
                 err: this.state.errors.gender as string,
                 gender: 'Мужчина',
                 genderValue: 'male',
@@ -226,7 +226,7 @@ class Form extends Component<FormProps, FormState> {
             />
             <RadioInput
               attr={{
-                changeInput: this.unDisabledBtn,
+                changeInput: this.unlockButton,
                 err: this.state.errors.gender as string,
                 gender: 'Женщина',
                 genderValue: 'female',
@@ -236,19 +236,19 @@ class Form extends Component<FormProps, FormState> {
             <ErrorMessage>{this.state.errors.gender as string}</ErrorMessage>
           </div>
           <DateInput
-            attr={{ changeInput: this.unDisabledBtn, err: this.state.errors.birthday as string }}
+            attr={{ changeInput: this.unlockButton, err: this.state.errors.birthday as string }}
           />
           <FileInput
-            attr={{ changeInput: this.unDisabledBtn, err: this.state.errors.photo as string }}
+            attr={{ changeInput: this.unlockButton, err: this.state.errors.photo as string }}
           />
           <TextAreaInput
-            attr={{ changeTextArea: this.unDisabledBtn, err: this.state.errors.review as string }}
+            attr={{ changeTextArea: this.unlockButton, err: this.state.errors.review as string }}
           />
           <SelectInput
-            attr={{ changeSelect: this.unDisabledBtn, err: this.state.errors.mark as string }}
+            attr={{ changeSelect: this.unlockButton, err: this.state.errors.mark as string }}
           />
           <CheckboxInput
-            attr={{ changeInput: this.unDisabledBtn, err: this.state.errors.data as string }}
+            attr={{ changeInput: this.unlockButton, err: this.state.errors.data as string }}
           />
           <ButtonSubmit disabled={this.state.disable} />
         </form>
