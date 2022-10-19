@@ -16,12 +16,12 @@ class MainPage extends React.Component<CardsProps, CardsState> {
     super(props);
     this.state = {
       data: localStorage.getItem('value')
-        ? [...listMovies].filter((card) =>
+        ? listMovies.filter((card) =>
             card.title
               .toLowerCase()
               .includes((localStorage.getItem('value') as string).toLowerCase())
           )
-        : [...listMovies],
+        : listMovies,
     };
     this.filterCardList = this.filterCardList.bind(this);
   }
@@ -30,7 +30,7 @@ class MainPage extends React.Component<CardsProps, CardsState> {
     const filteredCards = listMovies.filter((card) =>
       card.title.toLowerCase().includes(value.toLowerCase())
     );
-    this.setState({ data: [...filteredCards] });
+    this.setState({ data: filteredCards });
   }
 
   render() {
