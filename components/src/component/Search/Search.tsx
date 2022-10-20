@@ -1,48 +1,36 @@
-import React from 'react';
+import { SearchProps } from 'data/types';
+import React, { useEffect, useState } from 'react';
 
-type SearchState = {
-  value: string;
-};
+function Search({ getSearchCardList }: SearchProps) {
+  const [value, setValue] = useState(
+    localStorage.getItem('value') ? (localStorage.getItem('value') as string) : ''
+  );
 
-type SearchProps = Record<string, (value: string) => void>;
+  useEffect(() => {
+    return () => localStorage.setItem('value', value);
+  });
 
-class Search extends React.Component<SearchProps, SearchState> {
-  constructor(props: SearchProps) {
-    super(props);
-    this.state = {
-      value: localStorage.getItem('value') ? (localStorage.getItem('value') as string) : '',
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.keyDown = this.keyDown.bind(this);
+  function handleChange(event: React.FormEvent) {
+    setValue((event.target as HTMLInputElement).value);
   }
 
-  handleChange(event: React.FormEvent) {
-    this.setState({ value: (event.target as HTMLInputElement).value });
-  }
-
-  async keyDown(event: React.KeyboardEvent) {
-    if (event.key === 'Enter' && this.state.value !== '') {
-      await this.props.getSearchCardList((event.target as HTMLInputElement).value);
+  async function keyDown(event: React.KeyboardEvent) {
+    if (event.key === 'Enter' && value !== '') {
+      await getSearchCardList((event.target as HTMLInputElement).value);
     }
   }
 
-  componentWillUnmount(): void {
-    localStorage.setItem('value', this.state.value);
-  }
-
-  render(): JSX.Element {
-    return (
-      <input
-        className="search"
-        id="search"
-        type="search"
-        onChange={this.handleChange}
-        onKeyDown={this.keyDown}
-        value={this.state.value}
-        placeholder="Поиск..."
-      ></input>
-    );
-  }
+  return (
+    <input
+      className="search"
+      id="search"
+      type="search"
+      onChange={handleChange}
+      onKeyDown={keyDown}
+      value={value}
+      placeholder="Поиск..."
+    ></input>
+  );
 }
 
 export { Search };

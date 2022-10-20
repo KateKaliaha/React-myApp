@@ -76,3 +76,5 @@ export type CardListProps = {
   data: ICardApi[];
   openModalWindow: (event: React.MouseEvent<Element, MouseEvent>) => void;
 };
+
+export type SearchProps = Record<string, (value: string) => void>;
