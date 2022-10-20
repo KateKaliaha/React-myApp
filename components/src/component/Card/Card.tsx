@@ -13,6 +13,7 @@ function Card({ movie }: ICardProps): JSX.Element {
   } else {
     imgSRC = `${IMG_PATH + movie.poster_path}`;
   }
+
   const nameClasses = ['rate-container', 'like-container'];
 
   return (

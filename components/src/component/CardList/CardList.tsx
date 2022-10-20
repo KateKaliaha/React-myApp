@@ -3,7 +3,7 @@ import { ICardApi } from 'data/interfaces';
 import { CardListProps } from 'data/types';
 import React from 'react';
 
-export function CardList({ data, openModalWindow }: CardListProps) {
+export function CardList({ data, openModalWindow }: CardListProps): JSX.Element {
   return (
     <div className="card-list" onClick={openModalWindow}>
       {data.map((card: ICardApi) => (

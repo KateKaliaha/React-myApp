@@ -47,24 +47,12 @@ export type InputProps = {
 
 export type BtnSubmitProps = Record<string, boolean>;
 
-export type CardsState = {
-  data: ICardApi[];
-  modalActive: boolean;
-  card: ICardApi | undefined;
-  isFetching: boolean;
-  value: string | null;
-};
-
 export type CardsProps = Record<string, unknown>;
 
 export type ModalWindowProps = {
   active: boolean;
   movie: ICardApi;
   closeModalWindow: () => void;
-};
-
-export type ModalWindowState = {
-  data: ICardApi[];
 };
 
 export type PopularContentProps = {
