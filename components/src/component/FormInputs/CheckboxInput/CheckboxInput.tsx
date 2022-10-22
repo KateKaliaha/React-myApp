@@ -1,21 +1,21 @@
-import { InputProps } from 'data/types';
+import { InputFormProps } from 'data/types';
 import React from 'react';
 import './CheckboxInput.css';
 
-const CheckboxInput = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+const CheckboxInput = ({ label, register, onChange }: InputFormProps) => {
   return (
     <label className="checkbox">
       <input
         type="checkbox"
-        name="data"
         data-testid={'checkbox'}
-        ref={ref}
-        onChange={props.attr.changeInput}
+        {...register(label, {
+          required: 'Необходимо дать согласие на обработку персональных данных',
+          onChange: () => onChange(),
+        })}
       />
       <span className="checkbox__text">Согласен(на) на обработку персональных данных</span>
-      <div className="error">{props.attr.err}</div>
     </label>
   );
-});
+};
 
 export { CheckboxInput };

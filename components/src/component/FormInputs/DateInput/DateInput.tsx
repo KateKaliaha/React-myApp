@@ -1,23 +1,37 @@
-import { InputProps } from 'data/types';
+import { InputFormProps } from 'data/types';
 import React from 'react';
-import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import './DateInput.css';
 
-const DateInput = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+const DateInput = ({ label, register, onChange }: InputFormProps) => {
+  function validateBirthdayDate(value: string): boolean {
+    const minAgeUser = 7;
+    const birthdayDate = value.split('-');
+    const today = new Date();
+
+    if (+today.getFullYear() - minAgeUser <= +birthdayDate[0]) {
+      return false;
+    }
+
+    return true;
+  }
+
   return (
     <label>
       <p> Дата рождения:</p>
       <input
         className="date"
-        name="date"
         type="date"
-        data-testid={'date'}
-        ref={ref}
-        onChange={props.attr.changeInput}
+        data-testid={label}
+        {...register(label, {
+          required: 'Введите дату рождения',
+          validate: {
+            value: (value) => validateBirthdayDate(value as string),
+          },
+          onChange: () => onChange(),
+        })}
       />
-      <ErrorMessage>{props.attr.err as string}</ErrorMessage>
     </label>
   );
-});
+};
 
 export { DateInput };

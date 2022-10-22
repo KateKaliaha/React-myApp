@@ -1,4 +1,5 @@
-import { ICardApi, IFormCard } from './interfaces';
+import { Path, UseFormRegister } from 'react-hook-form';
+import { ICardApi, IFormCard, IFormValues } from './interfaces';
 
 export type FormPageState = {
   card: IFormCard[];
@@ -33,18 +34,6 @@ export type Errors = {
   data?: string;
 };
 
-export type InputProps = {
-  attr: {
-    changeInput?: React.ChangeEventHandler<HTMLInputElement>;
-    changeTextArea?: React.ChangeEventHandler<HTMLTextAreaElement>;
-    changeSelect?: React.ChangeEventHandler<HTMLSelectElement>;
-    err?: string;
-    gender?: string;
-    genderValue?: string;
-    disabled?: boolean;
-  };
-};
-
 export type BtnSubmitProps = Record<string, boolean>;
 
 export type CardsProps = Record<string, unknown>;
@@ -66,3 +55,11 @@ export type CardListProps = {
 };
 
 export type SearchProps = Record<string, (value: string) => void>;
+
+export type InputFormProps = {
+  label: Path<IFormValues>;
+  register: UseFormRegister<IFormValues>;
+  required: boolean;
+  onChange: () => void;
+  value?: string;
+};

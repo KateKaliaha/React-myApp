@@ -1,22 +1,23 @@
-import { InputProps } from 'data/types';
 import React from 'react';
-import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
+import { InputFormProps } from 'data/types';
 import './TextAreaInput.css';
 
-const TextAreaInput = React.forwardRef<HTMLTextAreaElement, InputProps>((props, ref) => {
+export const TextAreaInput = ({ label, register, onChange }: InputFormProps) => {
   return (
     <label>
       <p> Отзыв о сайте:</p>
       <textarea
         data-testid={'textarea'}
         className="textarea"
-        name="textarea"
-        ref={ref}
-        onChange={props.attr.changeTextArea}
+        {...register(label, {
+          required: 'Напишите отзыв',
+          minLength: {
+            value: 10,
+            message: 'Отзыв должен содержать минимум 10 символов',
+          },
+          onChange: () => onChange(),
+        })}
       />
-      <ErrorMessage>{props.attr.err as string}</ErrorMessage>
     </label>
   );
-});
-
-export { TextAreaInput };
+};

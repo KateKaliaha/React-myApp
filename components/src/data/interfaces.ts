@@ -4,7 +4,7 @@ export interface IFormCard {
   photo: string;
   review: string;
   mark: string;
-  data: boolean;
+  data?: boolean;
   gender: string;
 }
 
@@ -38,4 +38,14 @@ export interface IResponse {
   results: ICardApi[];
   total_pages: number;
   total_results: number;
+}
+
+export interface IFormValues {
+  name: string;
+  birthday: string;
+  photo: string;
+  review: string;
+  data: boolean;
+  mark: string;
+  gender: string;
 }

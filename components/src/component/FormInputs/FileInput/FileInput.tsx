@@ -1,8 +1,7 @@
-import { InputProps } from 'data/types';
 import React from 'react';
-import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
+import { InputFormProps } from 'data/types';
 
-const FileInput = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+export const FileInput = ({ label, register, onChange }: InputFormProps) => {
   return (
     <label>
       <p> Загрузите фотографию:</p>
@@ -11,13 +10,11 @@ const FileInput = React.forwardRef<HTMLInputElement, InputProps>((props, ref) =>
         type="file"
         data-testid={'photo'}
         accept="image/*"
-        name="photo"
-        ref={ref}
-        onChange={props.attr.changeInput}
+        {...register(label, {
+          required: 'Загрузите фотографию',
+          onChange: () => onChange(),
+        })}
       />
-      <ErrorMessage>{props.attr.err as string}</ErrorMessage>
     </label>
   );
-});
-
-export { FileInput };
+};

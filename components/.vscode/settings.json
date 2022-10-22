@@ -1,5 +1,10 @@
 {
   "cSpell.words": [
     "Загрузите"
-  ]
+  ],
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "editor.wordWrap": "on",
+  "explorer.compactFolders": false
 }

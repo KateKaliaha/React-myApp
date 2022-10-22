@@ -1,24 +1,29 @@
-import { InputProps } from 'data/types';
 import React from 'react';
 import './RadioInput.css';
+import { InputFormProps } from 'data/types';
 
-const RadioInput = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+export const RadioInput = ({ label, register, onChange, value }: InputFormProps) => {
+  let nameGender;
+  if (value === 'male') {
+    nameGender = 'Мужчина';
+  } else {
+    nameGender = 'Женщина';
+  }
   return (
     <>
       <input
         type="radio"
-        name="gender"
-        id={props.attr.genderValue}
-        value={props.attr.genderValue}
-        data-testid={props.attr.genderValue}
-        ref={ref}
-        onChange={props.attr.changeInput}
+        id={value}
+        value={value}
+        data-testid={label}
+        {...register(label, {
+          required: 'Выберите пол',
+          onChange: () => onChange(),
+        })}
       />
-      <label className="label-female" htmlFor={props.attr.genderValue}>
-        {props.attr.gender}
+      <label className="label-female" htmlFor={value}>
+        {nameGender}
       </label>
     </>
   );
-});
-
-export { RadioInput };
+};

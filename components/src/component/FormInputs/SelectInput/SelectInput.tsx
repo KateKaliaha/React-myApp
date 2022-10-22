@@ -1,18 +1,18 @@
-import { InputProps } from 'data/types';
+import { InputFormProps } from 'data/types';
 import React from 'react';
-import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import './SelectInput.css';
 
-const SelectInput = React.forwardRef<HTMLSelectElement, InputProps>((props, ref) => {
+export const SelectInput = ({ label, register, onChange }: InputFormProps) => {
   return (
     <label>
       <p> Ваша оценка: </p>
       <select
         className="select-form"
-        data-testid={'mark'}
-        name="mark"
-        ref={ref}
-        onChange={props.attr.changeSelect}
+        data-testid={label}
+        {...register(label, {
+          required: 'Выберите оценку',
+          onChange: () => onChange(),
+        })}
       >
         <option value=""></option>
         <option value="1">1</option>
@@ -21,9 +21,6 @@ const SelectInput = React.forwardRef<HTMLSelectElement, InputProps>((props, ref)
         <option value="4">4</option>
         <option value="5">5</option>
       </select>
-      <ErrorMessage>{props.attr.err as string}</ErrorMessage>
     </label>
   );
-});
-
-export { SelectInput };
+};

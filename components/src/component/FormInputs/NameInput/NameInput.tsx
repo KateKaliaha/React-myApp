@@ -1,9 +1,8 @@
-import { InputProps } from 'data/types';
 import React from 'react';
-import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import './NameInput.css';
+import { InputFormProps } from 'data/types';
 
-const NameInput = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+const NameInput = ({ label, register, onChange }: InputFormProps) => {
   return (
     <label>
       <p>Имя:</p>
@@ -12,13 +11,21 @@ const NameInput = React.forwardRef<HTMLInputElement, InputProps>((props, ref) =>
         type="text"
         placeholder="Введите имя"
         data-testid={'name'}
-        name="name"
-        ref={ref}
-        onChange={props.attr.changeInput}
+        {...register(label, {
+          required: 'Поле обязательно к заполнению',
+          minLength: {
+            value: 2,
+            message: 'Имя должно содержать минимум 2 буквы',
+          },
+          pattern: {
+            value: /^[a-zа-яё]+$/i,
+            message: 'Имя должно состоять только из букв',
+          },
+          onChange: () => onChange(),
+        })}
       />
-      <ErrorMessage>{props.attr.err as string}</ErrorMessage>
     </label>
   );
-});
+};
 
 export { NameInput };
