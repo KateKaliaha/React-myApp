@@ -35,7 +35,7 @@ export type InputFormProps = {
   label: Path<IFormValues>;
   register: UseFormRegister<IFormValues>;
   required: boolean;
-  onChange: () => void;
+  // onChange: () => void;
   value?: string;
   errors?: ErrorsValidation;
   submit?: boolean;

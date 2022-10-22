@@ -15,7 +15,7 @@ import './Form.css';
 export function Form({ changeCards }: FormProps) {
   const {
     register,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isDirty },
     handleSubmit,
     reset,
   } = useForm({
@@ -31,7 +31,6 @@ export function Form({ changeCards }: FormProps) {
   });
 
   const [message, setMessage] = useState('');
-  const [firstChangeForm, setFirstChangeForm] = useState(false);
   const [submit, setSubmit] = useState(false);
 
   const handleError = async () => {
@@ -43,7 +42,6 @@ export function Form({ changeCards }: FormProps) {
   const handleRegistration = async (data: FieldValues) => {
     await setMessage('Отзыв сохранен успешно!!!');
     await setSubmit(false);
-    await setFirstChangeForm(false);
 
     const dataCard = {
       name: data.name as string,
@@ -62,12 +60,6 @@ export function Form({ changeCards }: FormProps) {
     }, 500);
   };
 
-  function typeFirstSymbolInInput() {
-    if (!submit && !firstChangeForm) {
-      setFirstChangeForm(true);
-    }
-  }
-
   return (
     <>
       <form
@@ -75,75 +67,27 @@ export function Form({ changeCards }: FormProps) {
         data-testid={'form'}
         onSubmit={handleSubmit(handleRegistration, handleError)}
       >
-        <NameInput
-          label="name"
-          register={register}
-          onChange={typeFirstSymbolInInput}
-          errors={errors}
-          submit={submit}
-          required
-        />
+        <NameInput label="name" register={register} errors={errors} submit={submit} required />
         <div className="custom-radio">
           <p>Выберите пол: </p>
-          <RadioInput
-            label="gender"
-            register={register}
-            onChange={typeFirstSymbolInInput}
-            value="male"
-            required
-          />
-          <RadioInput
-            label="gender"
-            register={register}
-            onChange={typeFirstSymbolInInput}
-            value="female"
-            required
-          />
+          <RadioInput label="gender" register={register} value="male" required />
+          <RadioInput label="gender" register={register} value="female" required />
           <ErrorMessage>
             {errors?.gender && submit ? (errors.gender.message as string) : ''}
           </ErrorMessage>
         </div>
-        <DateInput
-          label="birthday"
-          register={register}
-          onChange={typeFirstSymbolInInput}
-          errors={errors}
-          submit={submit}
-          required
-        />
-        <FileInput
-          label="photo"
-          register={register}
-          onChange={typeFirstSymbolInInput}
-          required
-          errors={errors}
-          submit={submit}
-        />
+        <DateInput label="birthday" register={register} errors={errors} submit={submit} required />
+        <FileInput label="photo" register={register} required errors={errors} submit={submit} />
         <TextAreaInput
           label="review"
           register={register}
-          onChange={typeFirstSymbolInInput}
           required
           errors={errors}
           submit={submit}
         />
-        <SelectInput
-          label="mark"
-          register={register}
-          onChange={typeFirstSymbolInInput}
-          required
-          errors={errors}
-          submit={submit}
-        />
-        <CheckboxInput
-          label="data"
-          register={register}
-          onChange={typeFirstSymbolInInput}
-          required
-          errors={errors}
-          submit={submit}
-        />
-        <ButtonSubmit submit={submit} firstChangeForm={firstChangeForm} isValid={isValid} />
+        <SelectInput label="mark" register={register} required errors={errors} submit={submit} />
+        <CheckboxInput label="data" register={register} required errors={errors} submit={submit} />
+        <ButtonSubmit submit={submit} firstChangeForm={isDirty} isValid={isValid} />
       </form>
       <div className="message-success">{message}</div>
     </>

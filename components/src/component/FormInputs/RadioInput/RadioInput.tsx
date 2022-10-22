@@ -2,7 +2,7 @@ import React from 'react';
 import './RadioInput.css';
 import { InputFormProps } from 'data/types';
 
-export const RadioInput = ({ label, register, onChange, value }: InputFormProps) => {
+export const RadioInput = ({ label, register, value }: InputFormProps) => {
   let nameGender;
   if (value === 'male') {
     nameGender = 'Мужчина';
@@ -18,7 +18,6 @@ export const RadioInput = ({ label, register, onChange, value }: InputFormProps)
         data-testid={label}
         {...register(label, {
           required: 'Выберите пол',
-          onChange: () => onChange(),
         })}
       />
       <label className="label-female" htmlFor={value}>

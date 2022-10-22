@@ -3,7 +3,7 @@ import React from 'react';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import './CheckboxInput.css';
 
-export const CheckboxInput = ({ label, register, onChange, errors, submit }: InputFormProps) => {
+export const CheckboxInput = ({ label, register, errors, submit }: InputFormProps) => {
   return (
     <>
       <label className="checkbox">
@@ -12,7 +12,6 @@ export const CheckboxInput = ({ label, register, onChange, errors, submit }: Inp
           data-testid={'checkbox'}
           {...register(label, {
             required: 'Необходимо дать согласие на обработку персональных данных',
-            onChange: () => onChange(),
           })}
         />
         <span className="checkbox__text">Согласен(на) на обработку персональных данных</span>

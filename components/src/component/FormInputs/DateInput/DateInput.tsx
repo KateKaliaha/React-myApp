@@ -3,19 +3,19 @@ import React from 'react';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import './DateInput.css';
 
-export const DateInput = ({ label, register, onChange, errors, submit }: InputFormProps) => {
-  function validateBirthdayDate(value: string): boolean {
-    const minAgeUser = 7;
-    const birthdayDate = value.split('-');
-    const today = new Date();
+export function validateBirthdayDate(value: string): boolean {
+  const minAgeUser = 7;
+  const birthdayDate = value.split('-');
+  const today = new Date();
 
-    if (+today.getFullYear() - minAgeUser <= +birthdayDate[0]) {
-      return false;
-    }
-
-    return true;
+  if (+today.getFullYear() - minAgeUser <= +birthdayDate[0]) {
+    return false;
   }
 
+  return true;
+}
+
+export const DateInput = ({ label, register, errors, submit }: InputFormProps) => {
   return (
     <label>
       <p> Дата рождения:</p>
@@ -28,7 +28,6 @@ export const DateInput = ({ label, register, onChange, errors, submit }: InputFo
           validate: {
             value: (value) => validateBirthdayDate(value as string),
           },
-          onChange: () => onChange(),
         })}
       />
       <ErrorMessage>

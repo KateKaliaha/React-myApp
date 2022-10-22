@@ -3,7 +3,7 @@ import { InputFormProps } from 'data/types';
 import './TextAreaInput.css';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 
-export const TextAreaInput = ({ label, register, onChange, errors, submit }: InputFormProps) => {
+export const TextAreaInput = ({ label, register, errors, submit }: InputFormProps) => {
   return (
     <label>
       <p> Отзыв о сайте:</p>
@@ -16,7 +16,6 @@ export const TextAreaInput = ({ label, register, onChange, errors, submit }: Inp
             value: 10,
             message: 'Отзыв должен содержать минимум 10 символов',
           },
-          onChange: () => onChange(),
         })}
       />
       <ErrorMessage>

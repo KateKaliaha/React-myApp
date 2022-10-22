@@ -3,7 +3,7 @@ import './NameInput.css';
 import { InputFormProps } from 'data/types';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 
-export const NameInput = ({ label, register, onChange, errors, submit }: InputFormProps) => {
+export const NameInput = ({ label, register, errors, submit }: InputFormProps) => {
   return (
     <label>
       <p>Имя:</p>
@@ -22,7 +22,6 @@ export const NameInput = ({ label, register, onChange, errors, submit }: InputFo
             value: /^[a-zа-яё]+$/i,
             message: 'Имя должно состоять только из букв',
           },
-          onChange: () => onChange(),
         })}
       />
       <ErrorMessage>{errors?.name && submit ? (errors.name.message as string) : ''}</ErrorMessage>

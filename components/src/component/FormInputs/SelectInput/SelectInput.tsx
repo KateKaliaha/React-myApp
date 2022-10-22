@@ -3,7 +3,7 @@ import React from 'react';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import './SelectInput.css';
 
-export const SelectInput = ({ label, register, onChange, errors, submit }: InputFormProps) => {
+export const SelectInput = ({ label, register, errors, submit }: InputFormProps) => {
   return (
     <label>
       <p> Ваша оценка: </p>
@@ -12,7 +12,6 @@ export const SelectInput = ({ label, register, onChange, errors, submit }: Input
         data-testid={label}
         {...register(label, {
           required: 'Выберите оценку',
-          onChange: () => onChange(),
         })}
       >
         <option value=""></option>
