@@ -1,6 +1,6 @@
 import React from 'react';
 
-function AboutPage() {
+export function AboutPage() {
   return (
     <div className="about-page">
       <p>Добро пожаловать на наш сайт!</p>
@@ -9,4 +9,3 @@ function AboutPage() {
     </div>
   );
 }
-export { AboutPage };

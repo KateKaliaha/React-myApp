@@ -1,8 +1,9 @@
 import React from 'react';
 import './NameInput.css';
 import { InputFormProps } from 'data/types';
+import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 
-const NameInput = ({ label, register, onChange }: InputFormProps) => {
+export const NameInput = ({ label, register, onChange, errors, submit }: InputFormProps) => {
   return (
     <label>
       <p>Имя:</p>
@@ -24,8 +25,7 @@ const NameInput = ({ label, register, onChange }: InputFormProps) => {
           onChange: () => onChange(),
         })}
       />
+      <ErrorMessage>{errors?.name && submit ? (errors.name.message as string) : ''}</ErrorMessage>
     </label>
   );
 };
-
-export { NameInput };

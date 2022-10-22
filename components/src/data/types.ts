@@ -37,4 +37,19 @@ export type InputFormProps = {
   required: boolean;
   onChange: () => void;
   value?: string;
+  errors?: ErrorsValidation;
+  submit?: boolean;
+};
+
+export type ErrorsValidation = {
+  name?: ErrorMessage;
+  birthday?: ErrorMessage;
+  photo?: ErrorMessage;
+  review?: ErrorMessage;
+  mark?: ErrorMessage;
+  data?: ErrorMessage;
+};
+
+type ErrorMessage = {
+  message?: string;
 };

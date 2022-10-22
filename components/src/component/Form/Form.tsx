@@ -75,8 +75,14 @@ export function Form({ changeCards }: FormProps) {
         data-testid={'form'}
         onSubmit={handleSubmit(handleRegistration, handleError)}
       >
-        <NameInput label="name" register={register} onChange={typeFirstSymbolInInput} required />
-        <ErrorMessage>{errors?.name && submit ? (errors.name.message as string) : ''}</ErrorMessage>
+        <NameInput
+          label="name"
+          register={register}
+          onChange={typeFirstSymbolInInput}
+          errors={errors}
+          submit={submit}
+          required
+        />
         <div className="custom-radio">
           <p>Выберите пол: </p>
           <RadioInput
@@ -101,35 +107,42 @@ export function Form({ changeCards }: FormProps) {
           label="birthday"
           register={register}
           onChange={typeFirstSymbolInInput}
+          errors={errors}
+          submit={submit}
           required
         />
-        <ErrorMessage>
-          {errors?.birthday && submit
-            ? (errors.birthday.message as string) || 'Возраст должен быть больше 7 лет'
-            : ''}
-        </ErrorMessage>
-        <FileInput label="photo" register={register} onChange={typeFirstSymbolInInput} required />
-        <ErrorMessage>
-          {errors?.photo && submit ? (errors.photo.message as string) : ''}
-        </ErrorMessage>
+        <FileInput
+          label="photo"
+          register={register}
+          onChange={typeFirstSymbolInInput}
+          required
+          errors={errors}
+          submit={submit}
+        />
         <TextAreaInput
           label="review"
           register={register}
           onChange={typeFirstSymbolInInput}
           required
+          errors={errors}
+          submit={submit}
         />
-        <ErrorMessage>
-          {errors?.review && submit ? (errors.review.message as string) : ''}
-        </ErrorMessage>
-        <SelectInput label="mark" register={register} onChange={typeFirstSymbolInInput} required />
-        <ErrorMessage>{errors?.mark && submit ? (errors.mark.message as string) : ''}</ErrorMessage>
+        <SelectInput
+          label="mark"
+          register={register}
+          onChange={typeFirstSymbolInInput}
+          required
+          errors={errors}
+          submit={submit}
+        />
         <CheckboxInput
           label="data"
           register={register}
           onChange={typeFirstSymbolInInput}
           required
+          errors={errors}
+          submit={submit}
         />
-        <ErrorMessage>{errors?.data && submit ? (errors.data.message as string) : ''}</ErrorMessage>
         <ButtonSubmit submit={submit} firstChangeForm={firstChangeForm} isValid={isValid} />
       </form>
       <div className="message-success">{message}</div>

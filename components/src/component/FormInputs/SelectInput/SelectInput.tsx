@@ -1,8 +1,9 @@
 import { InputFormProps } from 'data/types';
 import React from 'react';
+import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import './SelectInput.css';
 
-export const SelectInput = ({ label, register, onChange }: InputFormProps) => {
+export const SelectInput = ({ label, register, onChange, errors, submit }: InputFormProps) => {
   return (
     <label>
       <p> Ваша оценка: </p>
@@ -21,6 +22,7 @@ export const SelectInput = ({ label, register, onChange }: InputFormProps) => {
         <option value="4">4</option>
         <option value="5">5</option>
       </select>
+      <ErrorMessage>{errors?.mark && submit ? (errors.mark.message as string) : ''}</ErrorMessage>
     </label>
   );
 };

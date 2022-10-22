@@ -1,7 +1,7 @@
 import { render, act, screen, fireEvent, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import MainPage from './MainPage';
+import { MainPage } from './MainPage';
 
 const fakeMoviesArray = [
   {

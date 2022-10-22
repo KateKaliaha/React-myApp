@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function ErrorPage() {
+export function ErrorPage() {
   return (
     <>
       <div className="error-page">
@@ -13,4 +13,3 @@ function ErrorPage() {
     </>
   );
 }
-export { ErrorPage };

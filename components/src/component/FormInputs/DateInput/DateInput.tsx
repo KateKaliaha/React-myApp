@@ -1,8 +1,9 @@
 import { InputFormProps } from 'data/types';
 import React from 'react';
+import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import './DateInput.css';
 
-const DateInput = ({ label, register, onChange }: InputFormProps) => {
+export const DateInput = ({ label, register, onChange, errors, submit }: InputFormProps) => {
   function validateBirthdayDate(value: string): boolean {
     const minAgeUser = 7;
     const birthdayDate = value.split('-');
@@ -30,8 +31,11 @@ const DateInput = ({ label, register, onChange }: InputFormProps) => {
           onChange: () => onChange(),
         })}
       />
+      <ErrorMessage>
+        {errors?.birthday && submit
+          ? (errors.birthday.message as string) || 'Возраст должен быть больше 7 лет'
+          : ''}
+      </ErrorMessage>
     </label>
   );
 };
-
-export { DateInput };

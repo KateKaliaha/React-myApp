@@ -1,7 +1,8 @@
 import React from 'react';
 import { InputFormProps } from 'data/types';
+import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 
-export const FileInput = ({ label, register, onChange }: InputFormProps) => {
+export const FileInput = ({ label, register, onChange, errors, submit }: InputFormProps) => {
   return (
     <label>
       <p> Загрузите фотографию:</p>
@@ -15,6 +16,7 @@ export const FileInput = ({ label, register, onChange }: InputFormProps) => {
           onChange: () => onChange(),
         })}
       />
+      <ErrorMessage>{errors?.photo && submit ? (errors.photo.message as string) : ''}</ErrorMessage>
     </label>
   );
 };

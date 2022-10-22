@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-function Navigation(): JSX.Element {
+export function Navigation(): JSX.Element {
   return (
     <nav className="nav-container">
       <NavLink to={'/'} end>
@@ -16,5 +16,3 @@ function Navigation(): JSX.Element {
     </nav>
   );
 }
-
-export { Navigation };

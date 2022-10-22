@@ -12,7 +12,7 @@ export const PATH_SEARCH =
 export const PATH_DISCOVER =
   'https://api.themoviedb.org/3/discover/movie?api_key=9c5e0f16891cead9f73032e139a5c245&language=ru-Ru';
 
-function MainPage(): JSX.Element {
+export function MainPage(): JSX.Element {
   const page = 1;
   const [data, setData] = useState<ICardApi[]>([]);
   const [modalActive, setModalActive] = useState(false);
@@ -43,6 +43,7 @@ function MainPage(): JSX.Element {
             setData(data.results);
           });
       }
+      await setIsFirstLoad(true);
     }
     fetchPromiseStartPage();
     setIsFetching(false);
@@ -96,5 +97,3 @@ function MainPage(): JSX.Element {
     </div>
   );
 }
-
-export default MainPage;

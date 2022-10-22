@@ -1,8 +1,9 @@
 import React from 'react';
 import { InputFormProps } from 'data/types';
 import './TextAreaInput.css';
+import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 
-export const TextAreaInput = ({ label, register, onChange }: InputFormProps) => {
+export const TextAreaInput = ({ label, register, onChange, errors, submit }: InputFormProps) => {
   return (
     <label>
       <p> Отзыв о сайте:</p>
@@ -18,6 +19,9 @@ export const TextAreaInput = ({ label, register, onChange }: InputFormProps) => 
           onChange: () => onChange(),
         })}
       />
+      <ErrorMessage>
+        {errors?.review && submit ? (errors.review.message as string) : ''}
+      </ErrorMessage>
     </label>
   );
 };

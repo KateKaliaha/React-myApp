@@ -1,7 +1,7 @@
 import { SearchProps } from 'data/types';
 import React, { useEffect, useState } from 'react';
 
-function Search({ getSearchCardList }: SearchProps) {
+export function Search({ getSearchCardList }: SearchProps) {
   const [value, setValue] = useState(
     localStorage.getItem('value') ? (localStorage.getItem('value') as string) : ''
   );
@@ -32,5 +32,3 @@ function Search({ getSearchCardList }: SearchProps) {
     ></input>
   );
 }
-
-export { Search };
