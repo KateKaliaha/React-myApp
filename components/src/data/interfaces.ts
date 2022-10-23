@@ -49,4 +49,3 @@ export interface IFormValues {
   mark: string;
   gender: string;
 }
-
