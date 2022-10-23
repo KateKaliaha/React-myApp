@@ -7,7 +7,9 @@ import { Form } from './Form';
 import { act } from 'react-dom/test-utils';
 
 const changeStateCard = jest.fn();
-global.URL.createObjectURL = jest.fn();
+window.URL.createObjectURL = function () {
+  return 'c/fff.png';
+};
 jest.useFakeTimers();
 jest.spyOn(global, 'setTimeout');
 
@@ -180,7 +182,10 @@ describe('Form', () => {
     });
 
     expect(screen.queryByText('Отзыв сохранен успешно!!!')).toBeInTheDocument();
-    jest.advanceTimersByTime(500);
+
+    await act(async () => {
+      await jest.advanceTimersByTime(500);
+    });
 
     expect(setTimeout).toHaveBeenCalledTimes(1);
     expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 500);
