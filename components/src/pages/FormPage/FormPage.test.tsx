@@ -1,11 +1,16 @@
 import React from 'react';
-import { act, render, screen } from '@testing-library/react';
+import { act, cleanup, render, screen } from '@testing-library/react';
 import { FormPage } from './FormPage';
 
 describe('Form page', () => {
+  afterEach(cleanup);
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
   it('render content form page', async () => {
-    act(() => {
-      render(<FormPage />);
+    await act(async () => {
+      await render(<FormPage />);
     });
 
     const formPage = screen.getByTestId('form-page');
@@ -18,8 +23,8 @@ describe('Form page', () => {
   });
 
   it('first render content to be equal null', async () => {
-    act(() => {
-      render(<FormPage />);
+    await act(async () => {
+      await render(<FormPage />);
     });
 
     const formContent = screen.getByTestId('form-content');

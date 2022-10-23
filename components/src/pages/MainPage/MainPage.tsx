@@ -87,13 +87,7 @@ export function MainPage(): JSX.Element {
         data.length > 0 && <CardList data={data} openModalWindow={openModalWindow} />
       )}
       {data.length === 0 && isFirstLoad && <Message />}
-      {modalActive && (
-        <ModalWindow
-          active={modalActive}
-          movie={card as ICardApi}
-          closeModalWindow={closeModalWindow}
-        />
-      )}
+      {modalActive && <ModalWindow movie={card as ICardApi} closeModalWindow={closeModalWindow} />}
     </div>
   );
 }

@@ -14,7 +14,6 @@ export type BtnSubmitProps = Record<string, boolean>;
 export type CardsProps = Record<string, unknown>;
 
 export type ModalWindowProps = {
-  active: boolean;
   movie: ICardApi;
   closeModalWindow: () => void;
 };
@@ -35,7 +34,6 @@ export type InputFormProps = {
   label: Path<IFormValues>;
   register: UseFormRegister<IFormValues>;
   required: boolean;
-  // onChange: () => void;
   value?: string;
   errors?: ErrorsValidation;
   submit?: boolean;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { FormCard } from 'component/FormCard/FormCard';
 import { IFormCard } from 'data/interfaces';
 import userEvent from '@testing-library/user-event';
@@ -7,8 +7,11 @@ import { Form } from './Form';
 import { act } from 'react-dom/test-utils';
 
 const changeStateCard = jest.fn();
+global.URL.createObjectURL = jest.fn();
+jest.useFakeTimers();
+jest.spyOn(global, 'setTimeout');
 
-const reviewArr = [
+export const reviewArr = [
   {
     name: 'Denis',
     birthday: '2010-03-12',
@@ -140,5 +143,84 @@ describe('Form', () => {
 
     const formCard = screen.getAllByTestId('review-card');
     expect(formCard.length).toBe(3);
+  });
+
+  it('type valid all input', async () => {
+    act(() => {
+      render(<Form changeCards={changeStateCard} />);
+    });
+
+    const message = screen.queryByTestId('message-success');
+    await expect(message).not.toHaveValue('Отзыв сохранен успешно!!!');
+
+    const text = screen.getByTestId('name');
+    const gender = screen.getAllByTestId('gender');
+    const date = screen.getByTestId('birthday');
+    const photo = screen.getByTestId('photo') as HTMLInputElement;
+    const textarea = screen.getByTestId('textarea');
+    const mark = screen.getByTestId('mark');
+    const checkbox = screen.getByTestId('checkbox');
+
+    const btnSubmit = screen.getByTestId('btn-submit');
+
+    await act(async () => {
+      await userEvent.type(text, 'kate');
+      await userEvent.click(gender[0]);
+      await fireEvent.change(date, { target: { value: '2010-11-01' } });
+      const file = new File(['hello'], 'hello.png', { type: ' image/png' });
+      await userEvent.upload(photo, file);
+      Object.defineProperty(photo, 'value', { value: file.name });
+      await userEvent.type(textarea, 'It is a good site!');
+      await fireEvent.change(mark, { target: { value: '3' } });
+      await userEvent.click(checkbox);
+    });
+
+    await act(async () => {
+      await userEvent.click(btnSubmit);
+    });
+
+    expect(screen.queryByText('Отзыв сохранен успешно!!!')).toBeInTheDocument();
+    jest.advanceTimersByTime(500);
+
+    expect(setTimeout).toHaveBeenCalledTimes(1);
+    expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 500);
+  });
+
+  it('type invalid some inputs', async () => {
+    act(() => {
+      render(<Form />);
+    });
+
+    const message = screen.queryByTestId('message-success');
+    await expect(message).not.toHaveValue('Отзыв сохранен успешно!!!');
+
+    const text = screen.getByTestId('name');
+    const gender = screen.getAllByTestId('gender');
+    const date = screen.getByTestId('birthday');
+    const photo = screen.getByTestId('photo') as HTMLInputElement;
+    const textarea = screen.getByTestId('textarea');
+    const mark = screen.getByTestId('mark');
+    const checkbox = screen.getByTestId('checkbox');
+
+    const btnSubmit = screen.getByTestId('btn-submit');
+
+    await act(async () => {
+      await userEvent.type(text, 'kate1');
+      await userEvent.click(gender[0]);
+      await fireEvent.change(date, { target: { value: '2010-11-01' } });
+      const file = new File(['hello'], 'hello.png', { type: ' image/png' });
+      await userEvent.upload(photo, file);
+      Object.defineProperty(photo, 'value', { value: file.name });
+      await userEvent.type(textarea, 'It');
+      await fireEvent.change(mark, { target: { value: '3' } });
+      await userEvent.click(checkbox);
+    });
+
+    await act(async () => {
+      await userEvent.click(btnSubmit);
+    });
+
+    expect(screen.queryByText('Отзыв сохранен успешно!!!')).not.toBeInTheDocument();
+    expect(setTimeout).not.toHaveBeenCalled();
   });
 });

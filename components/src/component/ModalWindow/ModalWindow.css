@@ -1,4 +1,4 @@
-.modal {
+.active-modal {
   width: 100vw;
   height: 100vh;
   top: 0;
@@ -8,11 +8,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  opacity: 0;
-}
-
-.modal.active-modal {
-  opacity: 1;
 }
 
 .modal-content-wrapper {

@@ -15,7 +15,7 @@ import './Form.css';
 export function Form({ changeCards }: FormProps) {
   const {
     register,
-    formState: { errors, isValid, isDirty },
+    formState: { errors, isValid, isDirty, isSubmitted },
     handleSubmit,
     reset,
   } = useForm({
@@ -31,17 +31,9 @@ export function Form({ changeCards }: FormProps) {
   });
 
   const [message, setMessage] = useState('');
-  const [submit, setSubmit] = useState(false);
-
-  const handleError = async () => {
-    if (submit === false) {
-      await setSubmit(true);
-    }
-  };
 
   const handleRegistration = async (data: FieldValues) => {
     await setMessage('Отзыв сохранен успешно!!!');
-    await setSubmit(false);
 
     const dataCard = {
       name: data.name as string,
@@ -62,34 +54,56 @@ export function Form({ changeCards }: FormProps) {
 
   return (
     <>
-      <form
-        className="form"
-        data-testid={'form'}
-        onSubmit={handleSubmit(handleRegistration, handleError)}
-      >
-        <NameInput label="name" register={register} errors={errors} submit={submit} required />
+      <form className="form" data-testid={'form'} onSubmit={handleSubmit(handleRegistration)}>
+        <NameInput label="name" register={register} errors={errors} submit={isSubmitted} required />
         <div className="custom-radio">
           <p>Выберите пол: </p>
           <RadioInput label="gender" register={register} value="male" required />
           <RadioInput label="gender" register={register} value="female" required />
           <ErrorMessage>
-            {errors?.gender && submit ? (errors.gender.message as string) : ''}
+            {errors?.gender && isSubmitted ? (errors.gender.message as string) : ''}
           </ErrorMessage>
         </div>
-        <DateInput label="birthday" register={register} errors={errors} submit={submit} required />
-        <FileInput label="photo" register={register} required errors={errors} submit={submit} />
+        <DateInput
+          label="birthday"
+          register={register}
+          errors={errors}
+          submit={isSubmitted}
+          required
+        />
+        <FileInput
+          label="photo"
+          register={register}
+          required
+          errors={errors}
+          submit={isSubmitted}
+        />
         <TextAreaInput
           label="review"
           register={register}
           required
           errors={errors}
-          submit={submit}
+          submit={isSubmitted}
         />
-        <SelectInput label="mark" register={register} required errors={errors} submit={submit} />
-        <CheckboxInput label="data" register={register} required errors={errors} submit={submit} />
-        <ButtonSubmit submit={submit} firstChangeForm={isDirty} isValid={isValid} />
+        <SelectInput
+          label="mark"
+          register={register}
+          required
+          errors={errors}
+          submit={isSubmitted}
+        />
+        <CheckboxInput
+          label="data"
+          register={register}
+          required
+          errors={errors}
+          submit={isSubmitted}
+        />
+        <ButtonSubmit submit={isSubmitted} firstChangeForm={isDirty} isValid={isValid} />
       </form>
-      <div className="message-success">{message}</div>
+      <div className="message-success" data-testid="message-success">
+        {message}
+      </div>
     </>
   );
 }

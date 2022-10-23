@@ -5,7 +5,7 @@ import { MainPage } from './MainPage';
 
 const fakeMoviesArray = [
   {
-    adult: false,
+    adult: true,
     backdrop_path: null,
     genre_ids: [18, 80],
     id: 1021735,
@@ -55,7 +55,7 @@ const fakeMoviesArray = [
     vote_count: 16,
   },
   {
-    adult: false,
+    adult: true,
     backdrop_path: '/8MVitvSlFmHLCDgJr93NvFX7H34.jpg',
     genre_ids: [18, 10749, 10752],
     id: 72996,
@@ -102,6 +102,8 @@ const localStorageMock = (function () {
 Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 
 describe('MainPage:', () => {
+  afterEach(cleanup);
+
   beforeEach(() => {
     window.localStorage.clear();
     const mockJsonPromise = Promise.resolve({
@@ -117,27 +119,21 @@ describe('MainPage:', () => {
   });
 
   test('render component with value in localstorage, click on card and check open and close modal window', async () => {
-    // const spyDidMount = jest.spyOn(MainPage.prototype, 'componentDidMount');
-    // const spyOpenModalWindow = jest.spyOn(MainPage.prototype, 'openModalWindow');
-    // const spyCloseModalWindow = jest.spyOn(MainPage.prototype, 'closeModalWindow');
-    // const fetchPromiseStartPage = jest.spyOn(MainPage.prototype, 'fetchPromiseStartPage');
     localStorageMock.setItem('value', 'дом');
 
     await act(async () => {
-      render(<MainPage />);
+      await render(<MainPage />);
     });
 
-    await expect((await screen.findAllByRole('img')).length).toBe(4);
-    // expect(spyDidMount).toHaveBeenCalledTimes(1);
-    // expect(fetchPromiseStartPage).toHaveBeenCalled();
+    expect(screen.queryAllByRole('img').length).toBe(4);
+    expect(screen.queryByTestId('active-modal')).toBeNull();
 
     const card = screen.queryAllByTestId('card');
+    expect(card.length).toBe(4);
 
     await act(async () => {
       await userEvent.click(card[0]);
     });
-
-    // expect(spyOpenModalWindow).toHaveBeenCalled();
 
     const modal = screen.getByTestId('modal');
     expect(modal.classList.contains('active-modal'));
@@ -147,32 +143,12 @@ describe('MainPage:', () => {
     await act(async () => {
       await userEvent.click(btnClose);
     });
-
-    // expect(spyCloseModalWindow).toHaveBeenCalled();
-  });
-
-  test('render component without value in localstorage', async () => {
-    // const mockMainPage = new MainPage({});
-    // const spyDidMount = jest.spyOn(MainPage.prototype, 'componentDidMount');
-
-    await act(async () => {
-      render(<MainPage />);
-    });
-
-    // expect(mockMainPage.state.value).toBeNull();
-    // expect(spyDidMount).toHaveBeenCalledTimes(1);
   });
 
   it('check working method getSearchCardList after keydown "Enter" in searchinput', async () => {
-    // const mockMainPage = new MainPage({});
-    // const spyGetSearchCardList = jest.spyOn(MainPage.prototype, 'getSearchCardList');
-
     await act(async () => {
       render(<MainPage />);
     });
-
-    // expect(mockMainPage.state.value).toBeNull();
-    // expect(spyGetSearchCardList).toHaveBeenCalledTimes(0);
 
     const input = screen.getByRole('searchbox');
 
@@ -181,6 +157,21 @@ describe('MainPage:', () => {
       await fireEvent.keyDown(input, { keyCode: 13 });
     });
 
-    // expect(spyGetSearchCardList).toBeCalled();
+    expect(screen.queryAllByText(/дом/i).length).toBe(4);
+  });
+
+  it('check not render cards when type nonexistent request', async () => {
+    await act(async () => {
+      render(<MainPage />);
+    });
+
+    const input = screen.getByRole('searchbox');
+
+    await act(async () => {
+      await userEvent.type(input, 'дом1111');
+      await fireEvent.keyDown(input, { keyCode: 13 });
+    });
+    const card = screen.queryAllByTestId('card');
+    expect(card.length).toBe(0);
   });
 });
