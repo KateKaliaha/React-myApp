@@ -161,6 +161,7 @@ describe('MainPage:', () => {
   });
 
   it('check not render cards when type nonexistent request', async () => {
+
     await act(async () => {
       render(<MainPage />);
     });
