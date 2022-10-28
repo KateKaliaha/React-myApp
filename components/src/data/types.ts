@@ -28,7 +28,12 @@ export type CardListProps = {
   openModalWindow: (event: React.MouseEvent<Element, MouseEvent>) => void;
 };
 
-export type SearchProps = Record<string, (value: string) => void>;
+export type SearchProps = {
+  onKeyDown: (value: string, page?: number) => void;
+  onChange: (event: React.FormEvent) => void;
+  value: string | null;
+  page?: number;
+};
 
 export type InputFormProps = {
   label: Path<IFormValues>;
@@ -50,4 +55,17 @@ export type ErrorsValidation = {
 
 type ErrorMessage = {
   message?: string;
+};
+
+export type SelectSortProps = {
+  sort: string;
+  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => Promise<void>;
+};
+
+export type PagesProps = {
+  pages: number[];
+  page: number;
+  onClick: (btnNumber: number) => Promise<void>;
+  countMovieOnPage: number;
+  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => Promise<void>;
 };

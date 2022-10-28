@@ -6,8 +6,8 @@ import React from 'react';
 export function CardList({ data, openModalWindow }: CardListProps): JSX.Element {
   return (
     <div className="card-list" onClick={openModalWindow}>
-      {data.map((card: ICardApi) => (
-        <Card movie={card} key={card.id} />
+      {data.map((card: ICardApi, i) => (
+        <Card movie={card} key={card.id + '' + i} />
       ))}
     </div>
   );

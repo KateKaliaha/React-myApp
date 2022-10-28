@@ -1,22 +1,20 @@
 import { SearchProps } from 'data/types';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
-export function Search({ getSearchCardList }: SearchProps) {
-  const [value, setValue] = useState(
-    localStorage.getItem('value') ? (localStorage.getItem('value') as string) : ''
-  );
-
+export function Search({ onKeyDown, onChange, value }: SearchProps) {
   useEffect(() => {
-    return () => localStorage.setItem('value', value);
+    return () => {
+      if (value !== null) {
+        localStorage.setItem('value', value);
+      } else {
+        localStorage.removeItem('value');
+      }
+    };
   });
-
-  function handleChange(event: React.FormEvent) {
-    setValue((event.target as HTMLInputElement).value);
-  }
 
   async function keyDown(event: React.KeyboardEvent) {
     if (event.key === 'Enter' && value !== '') {
-      await getSearchCardList((event.target as HTMLInputElement).value);
+      onKeyDown((event.target as HTMLInputElement).value);
     }
   }
 
@@ -25,9 +23,9 @@ export function Search({ getSearchCardList }: SearchProps) {
       className="search"
       id="search"
       type="search"
-      onChange={handleChange}
+      onChange={onChange}
       onKeyDown={keyDown}
-      value={value}
+      value={value ? value : ''}
       placeholder="Поиск..."
     ></input>
   );
