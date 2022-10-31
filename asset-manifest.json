@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/katekaliaha-REACT2022Q3/static/css/main.d3e65075.css",
-    "main.js": "/katekaliaha-REACT2022Q3/static/js/main.c135ea99.js",
+    "main.css": "/katekaliaha-REACT2022Q3/static/css/main.ebfd330c.css",
+    "main.js": "/katekaliaha-REACT2022Q3/static/js/main.5f663a00.js",
     "static/media/search.svg": "/katekaliaha-REACT2022Q3/static/media/search.bf83a24c74fc284242ff.svg",
     "index.html": "/katekaliaha-REACT2022Q3/index.html",
-    "main.d3e65075.css.map": "/katekaliaha-REACT2022Q3/static/css/main.d3e65075.css.map",
-    "main.c135ea99.js.map": "/katekaliaha-REACT2022Q3/static/js/main.c135ea99.js.map"
+    "main.ebfd330c.css.map": "/katekaliaha-REACT2022Q3/static/css/main.ebfd330c.css.map",
+    "main.5f663a00.js.map": "/katekaliaha-REACT2022Q3/static/js/main.5f663a00.js.map"
   },
   "entrypoints": [
-    "static/css/main.d3e65075.css",
-    "static/js/main.c135ea99.js"
+    "static/css/main.ebfd330c.css",
+    "static/js/main.5f663a00.js"
   ]
 }
