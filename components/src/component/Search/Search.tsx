@@ -1,20 +1,32 @@
-import { SearchProps } from 'data/types';
-import React, { useEffect } from 'react';
+import DataContext from 'context/DataContext';
+import React, { useContext, useEffect } from 'react';
 
-export function Search({ onKeyDown, onChange, value }: SearchProps) {
+export function Search(): JSX.Element {
+  const { state, dispatch } = useContext(DataContext);
+
   useEffect(() => {
     return () => {
-      if (value !== null) {
-        localStorage.setItem('value', value);
+      if (state.inputValue !== undefined || state.inputValue !== '') {
+        localStorage.setItem('value', state.inputValue!);
       } else {
         localStorage.removeItem('value');
       }
     };
   });
 
-  async function keyDown(event: React.KeyboardEvent) {
-    if (event.key === 'Enter' && value !== '') {
-      onKeyDown((event.target as HTMLInputElement).value);
+  function handleChangeInputSearch(event: React.FormEvent): void {
+    dispatch({ type: 'newInputValue', payload: (event.target as HTMLInputElement).value });
+  }
+
+  function keyDown(event: React.KeyboardEvent): void {
+    if (!state.isFirstLoad) {
+      dispatch({ type: 'newIsFirstLoad', payload: true });
+    }
+
+    if (event.key === 'Enter') {
+      dispatch({ type: 'newValue', payload: (event.target as HTMLInputElement).value });
+      dispatch({ type: 'newPage', payload: 1 });
+      dispatch({ type: 'newSort', payload: 'popularity.desc' });
     }
   }
 
@@ -23,9 +35,9 @@ export function Search({ onKeyDown, onChange, value }: SearchProps) {
       className="search"
       id="search"
       type="search"
-      onChange={onChange}
+      onChange={handleChangeInputSearch}
       onKeyDown={keyDown}
-      value={value ? value : ''}
+      value={state.inputValue ? state.inputValue : ''}
       placeholder="Поиск..."
     ></input>
   );

@@ -3,13 +3,12 @@ import userEvent from '@testing-library/user-event';
 import { Form } from 'component/Form/Form';
 import React from 'react';
 
-const changeStateCard = jest.fn();
 describe('FileInput', () => {
   beforeEach(cleanup);
 
   it('upload image into input file', async () => {
     const file = new File(['hello'], 'hello.png', { type: ' image/png' });
-    render(<Form changeCards={changeStateCard} />);
+    render(<Form />);
 
     const photo = screen.getByTestId('photo') as HTMLInputElement;
 

@@ -15,7 +15,7 @@ export function validateBirthdayDate(value: string): boolean {
   return true;
 }
 
-export const DateInput = ({ label, register, errors, submit }: InputFormProps) => {
+export const DateInput = ({ label, register, errors, submit }: InputFormProps): JSX.Element => {
   return (
     <label>
       <p> Дата рождения:</p>

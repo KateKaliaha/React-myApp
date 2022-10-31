@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function AboutPage() {
+export function AboutPage(): JSX.Element {
   return (
     <div className="about-page">
       <p>Добро пожаловать на наш сайт!</p>

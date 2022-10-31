@@ -2,7 +2,7 @@ import { PopularContentProps } from 'data/types';
 import React from 'react';
 import { FaHeart, FaStar } from 'react-icons/fa';
 
-export function PopularContent({ names, movie }: PopularContentProps) {
+export function PopularContent({ names, movie }: PopularContentProps): JSX.Element {
   return (
     <div className="popular">
       <div className={names[0]}>

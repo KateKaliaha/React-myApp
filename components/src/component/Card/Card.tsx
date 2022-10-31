@@ -2,7 +2,7 @@ import { PopularContent } from 'component/UI/PopularContent/PopularContent';
 import { ICardProps } from 'data/interfaces';
 import React from 'react';
 
-function Card({ movie }: ICardProps): JSX.Element {
+export function Card({ movie }: ICardProps): JSX.Element {
   const IMG_PATH = 'https://image.tmdb.org/t/p/w500';
   let imgSRC = '';
   const PathToNotFoundImage =
@@ -17,14 +17,10 @@ function Card({ movie }: ICardProps): JSX.Element {
   const nameClasses = ['rate-container', 'like-container'];
 
   return (
-    <>
-      <div className="card" id={movie.id + ''} data-testid="card">
-        <img className="card-img" src={imgSRC} data-testid="img-card"></img>
-        <h2 className="card-header">{movie.title}</h2>
-        <PopularContent names={nameClasses} movie={movie} />
-      </div>
-    </>
+    <div className="card" id={movie.id + ''} data-testid="card">
+      <img className="card-img" src={imgSRC} data-testid="img-card"></img>
+      <h2 className="card-header">{movie.title}</h2>
+      <PopularContent names={nameClasses} movie={movie} />
+    </div>
   );
 }
-
-export { Card };

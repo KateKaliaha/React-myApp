@@ -1,0 +1,101 @@
+.movie-content-wrapper {
+  width:80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  color: #3f4348;
+  font-size: 1.2rem;
+  overflow-y: auto;
+  margin: 0 auto;
+}
+
+.movie-card-img {
+  width: 20%;
+  border-radius: 8px;
+}
+
+.movie-header-wrapper {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.movie-header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.movie-name {
+  margin: 0;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.movie-rate-container,
+.movie-like-container {
+  display: flex;
+  gap: 10px;
+  font-size: 1.5rem;
+}
+
+.movie-like-container{
+  margin-left: 20px;
+}
+
+.movie-rate-container svg {
+  color: #ccac00;
+  height: 100%;
+}
+
+.movie-like-container svg {
+  color: #9e1632;
+  height: 100%;
+}
+
+.movie-rate-container p,
+.movie-like-container p {
+  margin: 0;
+}
+
+.movie-content-overview {
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: justify;
+  margin-bottom: 10px;
+}
+
+.movie-content-description {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  gap: 10px;
+}
+
+.movie-content-description p {
+  margin: 0;
+}
+
+.link-back {
+  border: 2px solid #3f4348;
+  border-radius: 8px;
+  border: 3px solid rgb(120, 49, 95);
+  text-align: center;
+  background-color: aliceblue;
+  margin-top: 20px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #3f4348;
+  padding: 10px;
+}
+
+.link-back:active {
+  transform: scale(0.9);
+  transition: 0.3s;
+}

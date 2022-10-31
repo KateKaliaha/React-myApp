@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 export function Navigation(): JSX.Element {
   return (
     <nav className="nav-container">
-      <NavLink to={'/'} end>
+      <NavLink to={'/movie'} end>
         Главная
       </NavLink>
       <NavLink to={'/about'} end>

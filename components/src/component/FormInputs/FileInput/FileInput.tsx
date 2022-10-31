@@ -2,7 +2,7 @@ import React from 'react';
 import { InputFormProps } from 'data/types';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 
-export const FileInput = ({ label, register, errors, submit }: InputFormProps) => {
+export const FileInput = ({ label, register, errors, submit }: InputFormProps): JSX.Element => {
   return (
     <label>
       <p> Загрузите фотографию:</p>

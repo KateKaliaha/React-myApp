@@ -1,14 +1,17 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Header } from 'component/Header/Header';
+import { DataProvider } from 'context/DataContext';
 
-function Layout() {
+function Layout(): JSX.Element {
   return (
     <>
-      <Header />
-      <main className="container">
-        <Outlet />
-      </main>
+      <DataProvider>
+        <Header />
+        <main className="container">
+          <Outlet />
+        </main>
+      </DataProvider>
     </>
   );
 }

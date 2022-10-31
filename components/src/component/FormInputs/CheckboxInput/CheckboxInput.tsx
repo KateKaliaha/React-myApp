@@ -3,7 +3,7 @@ import React from 'react';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import './CheckboxInput.css';
 
-export const CheckboxInput = ({ label, register, errors, submit }: InputFormProps) => {
+export const CheckboxInput = ({ label, register, errors, submit }: InputFormProps): JSX.Element => {
   return (
     <>
       <label className="checkbox">

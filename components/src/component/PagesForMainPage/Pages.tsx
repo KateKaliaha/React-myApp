@@ -1,15 +1,33 @@
-import { PagesProps } from 'data/types';
-import React from 'react';
+import DataContext from 'context/DataContext';
+import React, { useContext } from 'react';
+import { getPageCount, pagesArray } from 'utils/pages';
 
-export const Pages = ({ pages, page, onClick, countMovieOnPage, onChange }: PagesProps) => {
+export const Pages = (): JSX.Element => {
+  const { state, dispatch } = useContext(DataContext);
+  const pages = pagesArray(state.totalPages!);
+
+  function changeMoviesByPage(btnNumber: number): void {
+    dispatch({ type: 'newPage', payload: btnNumber });
+  }
+
+  function changeCountMoviesOnPage(event: React.ChangeEvent<HTMLSelectElement>): void {
+    dispatch({ type: 'newPage', payload: 1 });
+    dispatch({ type: 'newCountMovieOnPage', payload: +event.target.value });
+    dispatch({
+      type: 'newTotalPages',
+      payload: getPageCount(state.totalResults!, +event.target.value),
+    });
+  }
+
   return (
     <div>
       <div className="pages-wrapper">
         {pages.map((item) => (
           <div
-            className={item === page ? 'page-btn active-page-btn' : 'page-btn'}
+            data-testid={'page-btn'}
+            className={item === state.page ? 'page-btn active-page-btn' : 'page-btn'}
             key={item}
-            onClick={async () => await onClick(item)}
+            onClick={() => changeMoviesByPage(item)}
           >
             {item}
           </div>
@@ -18,10 +36,10 @@ export const Pages = ({ pages, page, onClick, countMovieOnPage, onChange }: Page
       <div className="select-wrapper">
         <span>Количество фильмов на странице</span>
         <select
-          defaultValue={countMovieOnPage + ''}
+          defaultValue={state.countMovieOnPage + ''}
           className="select-page"
           id="select-page"
-          onChange={(event) => onChange(event)}
+          onChange={(event) => changeCountMoviesOnPage(event)}
         >
           <option value="20">20</option>
           <option value="40">40</option>

@@ -65,7 +65,7 @@ const newReviewArr = [
 ];
 
 describe('Form', () => {
-  afterEach(cleanup);
+  afterEach(() => cleanup());
   it('render content from page with not empty data', async () => {
     act(() => {
       render(
@@ -133,7 +133,7 @@ describe('Form', () => {
     act(() => {
       render(
         <div className="form-page" data-testid="form-page">
-          <Form changeCards={changeStateCard} />
+          <Form />
           <div className="form-content" data-testid="form-content">
             {arr.map((el: IFormCard, i: React.Key | null | undefined) => (
               <FormCard key={i} card={el} />
@@ -149,7 +149,7 @@ describe('Form', () => {
 
   it('type valid all input', async () => {
     act(() => {
-      render(<Form changeCards={changeStateCard} />);
+      render(<Form />);
     });
 
     const message = screen.queryByTestId('message-success');

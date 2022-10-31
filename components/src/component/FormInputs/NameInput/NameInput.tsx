@@ -3,7 +3,7 @@ import './NameInput.css';
 import { InputFormProps } from 'data/types';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 
-export const NameInput = ({ label, register, errors, submit }: InputFormProps) => {
+export const NameInput = ({ label, register, errors, submit }: InputFormProps): JSX.Element => {
   return (
     <label>
       <p>Имя:</p>

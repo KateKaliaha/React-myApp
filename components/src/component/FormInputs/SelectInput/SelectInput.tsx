@@ -3,7 +3,7 @@ import React from 'react';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import './SelectInput.css';
 
-export const SelectInput = ({ label, register, errors, submit }: InputFormProps) => {
+export const SelectInput = ({ label, register, errors, submit }: InputFormProps): JSX.Element => {
   return (
     <label>
       <p> Ваша оценка: </p>

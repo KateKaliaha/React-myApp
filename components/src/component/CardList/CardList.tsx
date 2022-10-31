@@ -1,12 +1,27 @@
 import { Card } from 'component/Card/Card';
+import DataContext from 'context/DataContext';
 import { ICardApi } from 'data/interfaces';
-import { CardListProps } from 'data/types';
-import React from 'react';
+import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-export function CardList({ data, openModalWindow }: CardListProps): JSX.Element {
+export function CardList(): JSX.Element {
+  const navigate = useNavigate();
+  const { state, dispatch } = useContext(DataContext);
+
+  function openMovieCard(event: React.MouseEvent): void {
+    const id = +((event.target as HTMLElement).closest('.card')?.getAttribute('id') as string);
+
+    if (id) {
+      navigate(`${id}`);
+      const card = state.data.find((el) => el.id === id) as ICardApi;
+      dispatch({ type: 'newDisplayStyle', payload: 'none' });
+      dispatch({ type: 'newCard', payload: card });
+    }
+  }
+
   return (
-    <div className="card-list" onClick={openModalWindow}>
-      {data.map((card: ICardApi, i) => (
+    <div className="card-list" onClick={openMovieCard}>
+      {state.data.map((card: ICardApi, i) => (
         <Card movie={card} key={card.id + '' + i} />
       ))}
     </div>

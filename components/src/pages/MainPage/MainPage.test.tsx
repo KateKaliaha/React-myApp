@@ -1,9 +1,11 @@
 import { render, act, screen, fireEvent, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import DataContext from 'context/DataContext';
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import { MainPage } from './MainPage';
 
-const fakeMoviesArray = [
+export const fakeMoviesArray = [
   {
     adult: true,
     backdrop_path: null,
@@ -101,6 +103,37 @@ const localStorageMock = (function () {
 
 Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 
+export const state = {
+  display: 'flex',
+  data: fakeMoviesArray,
+  value: null,
+  inputValue: undefined,
+  page: 1,
+  totalPages: 1,
+  totalResults: 4,
+  countMovieOnPage: 20,
+  card: {
+    adult: true,
+    backdrop_path: '/s2KKdUusmKoCNIR0o5Byus4EcJO.jpg',
+    genre_ids: [18, 80],
+    id: 1021735,
+    original_language: 'ky',
+    original_title: 'Продаётся дом',
+    overview: ' ',
+    popularity: 13.025,
+    poster_path: '/s2KKdUusmKoCNIR0o5Byus4EcJO.jpg',
+    release_date: '2022-10-10',
+    title: 'Продаётся дом',
+    video: false,
+    vote_average: 0,
+    vote_count: 0,
+  },
+  isFirstLoad: false,
+  sort: 'popularity.desc',
+  cardForm: [],
+};
+export const dispatch = jest.fn();
+
 describe('MainPage:', () => {
   afterEach(cleanup);
 
@@ -118,46 +151,21 @@ describe('MainPage:', () => {
     global.fetch = jest.fn().mockImplementation(() => mockFetchPromise) as jest.Mock;
   });
 
-  test('render component with value in localstorage, click on card and check open and close modal window', async () => {
-    localStorageMock.setItem('value', 'дом');
-
+  it('render main page with cards', async () => {
     await act(async () => {
-      await render(<MainPage />);
+      await render(
+        <BrowserRouter>
+          <DataContext.Provider value={{ state, dispatch }}>
+            <MainPage />
+          </DataContext.Provider>
+        </BrowserRouter>
+      );
     });
-
-    expect(screen.queryAllByRole('img').length).toBe(4);
-    expect(screen.queryByTestId('active-modal')).toBeNull();
 
     const card = screen.queryAllByTestId('card');
     expect(card.length).toBe(4);
-
-    await act(async () => {
-      await userEvent.click(card[0]);
-    });
-
-    const modal = screen.getByTestId('modal');
-    expect(modal.classList.contains('active-modal'));
-
-    const btnClose = screen.getByTestId('close-btn');
-
-    await act(async () => {
-      await userEvent.click(btnClose);
-    });
-  });
-
-  it('check working method getSearchCardList after keydown "Enter" in searchinput', async () => {
-    await act(async () => {
-      render(<MainPage />);
-    });
-
-    const input = screen.getByRole('searchbox');
-
-    await act(async () => {
-      await userEvent.type(input, 'дом');
-      await fireEvent.keyDown(input, { keyCode: 13 });
-    });
-
-    expect(screen.queryAllByText(/дом/i).length).toBe(4);
+    const page = screen.queryAllByTestId('page-btn');
+    expect(page.length).toBe(1);
   });
 
   it('check not render cards when type nonexistent request', async () => {

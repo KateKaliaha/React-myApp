@@ -3,13 +3,11 @@ import userEvent from '@testing-library/user-event';
 import { Form } from 'component/Form/Form';
 import React from 'react';
 
-const changeStateCard = jest.fn();
-
 describe('DateInput:', () => {
   beforeEach(cleanup);
 
   it('type valid date not to call errors', async () => {
-    render(<Form changeCards={changeStateCard} />);
+    render(<Form />);
 
     const date = screen.getByTestId('birthday');
     const btnSubmit = screen.getByTestId('btn-submit');
@@ -24,7 +22,7 @@ describe('DateInput:', () => {
   });
 
   it('type invalid date to call validate error', async () => {
-    render(<Form changeCards={changeStateCard} />);
+    render(<Form />);
 
     const date = screen.getByTestId('birthday');
     const btnSubmit = screen.getByTestId('btn-submit');

@@ -1,38 +1,14 @@
+import { Dispatch } from 'react';
 import { Path, UseFormRegister } from 'react-hook-form';
 import { ICardApi, IFormCard, IFormValues } from './interfaces';
 
-export type FormCardState = {
-  card: IFormCard;
-};
-
 export type FormCardProps = Record<string, IFormCard>;
 
-export type FormProps = Record<string, (arr: IFormCard) => void>;
-
 export type BtnSubmitProps = Record<string, boolean>;
-
-export type CardsProps = Record<string, unknown>;
-
-export type ModalWindowProps = {
-  movie: ICardApi;
-  closeModalWindow: () => void;
-};
 
 export type PopularContentProps = {
   names: string[];
   movie: ICardApi;
-};
-
-export type CardListProps = {
-  data: ICardApi[];
-  openModalWindow: (event: React.MouseEvent<Element, MouseEvent>) => void;
-};
-
-export type SearchProps = {
-  onKeyDown: (value: string, page?: number) => void;
-  onChange: (event: React.FormEvent) => void;
-  value: string | null;
-  page?: number;
 };
 
 export type InputFormProps = {
@@ -57,15 +33,27 @@ type ErrorMessage = {
   message?: string;
 };
 
-export type SelectSortProps = {
-  sort: string;
-  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => Promise<void>;
+export type Action = {
+  type: string;
+  payload: string | ICardApi[] | null | number | ICardApi | boolean | IFormCard[];
 };
 
-export type PagesProps = {
-  pages: number[];
+export type ReducerState = {
+  display: string;
+  data: ICardApi[];
+  value: string | null;
+  inputValue: undefined | string;
   page: number;
-  onClick: (btnNumber: number) => Promise<void>;
+  totalPages: number | undefined;
+  totalResults: number | undefined;
   countMovieOnPage: number;
-  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => Promise<void>;
+  card: ICardApi | undefined;
+  isFirstLoad: boolean;
+  sort: string;
+  cardForm: IFormCard[];
+};
+
+export type ReducerContextValue = {
+  state: ReducerState;
+  dispatch: Dispatch<Action>;
 };

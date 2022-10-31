@@ -1,9 +1,3 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import App from 'App';
-import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
-
 describe('localStorage', () => {
   const localStorageMock = (function () {
     let store: Record<string, string> = {};
@@ -67,33 +61,5 @@ describe('localStorage', () => {
     const allItems = window.localStorage.getAll();
 
     expect(Object.keys(allItems).length).toBe(1);
-  });
-});
-
-describe('Search and localstorage', () => {
-  beforeEach(() => {
-    window.localStorage.clear();
-  });
-
-  it('input value after change pages', () => {
-    render(
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    );
-
-    const linkMain = screen.getByText(/Главная/i);
-    userEvent.click(linkMain);
-    expect(screen.getByPlaceholderText(/Поиск.../i)).toBeInTheDocument;
-    userEvent.type(screen.getByPlaceholderText(/Поиск.../i), '456');
-    expect(screen.getByPlaceholderText(/Поиск.../i)).toBeInTheDocument;
-    const linkAbout = screen.getByText(/О нас/i);
-    userEvent.click(linkAbout);
-
-    expect(screen.findByPlaceholderText(/Поиск.../i)).not.toBeInTheDocument;
-
-    userEvent.click(linkMain);
-    expect(screen.getByPlaceholderText(/Поиск.../i)).toHaveValue('456');
-    expect(window.localStorage.getItem('value')).toEqual('456');
   });
 });

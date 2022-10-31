@@ -2,7 +2,7 @@ import React from 'react';
 import './RadioInput.css';
 import { InputFormProps } from 'data/types';
 
-export const RadioInput = ({ label, register, value }: InputFormProps) => {
+export const RadioInput = ({ label, register, value }: InputFormProps): JSX.Element => {
   let nameGender;
   if (value === 'male') {
     nameGender = 'Мужчина';

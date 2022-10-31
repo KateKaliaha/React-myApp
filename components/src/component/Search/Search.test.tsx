@@ -6,8 +6,6 @@ import { Search } from 'component/Search/Search';
 import React from 'react';
 
 const handleChange = jest.fn();
-const openModalWindow = jest.fn();
-const filterCardList = jest.fn();
 const moviesArray = [
   {
     adult: false,
@@ -79,23 +77,23 @@ const moviesArray = [
 ];
 
 describe('SearchBar', () => {
-  // it('render search component', () => {
-  //   render(<Search />);
+  it('render search component', () => {
+    render(<Search />);
 
-  //   const input = screen.getByPlaceholderText(/Поиск.../i);
+    const input = screen.getByPlaceholderText(/Поиск.../i);
 
-  //   expect(input).toBeInTheDocument;
-  // });
+    expect(input).toBeInTheDocument;
+  });
 
-  // it('input focus', () => {
-  //   render(<Search />);
+  it('input focus', () => {
+    render(<Search />);
 
-  //   const input = screen.getByPlaceholderText(/Поиск.../i);
+    const input = screen.getByPlaceholderText(/Поиск.../i);
 
-  //   expect(input).not.toHaveFocus;
-  //   input.focus();
-  //   expect(input).toHaveFocus;
-  // });
+    expect(input).not.toHaveFocus;
+    input.focus();
+    expect(input).toHaveFocus;
+  });
 
   it('handleChange works', () => {
     render(<input placeholder="Поиск..." onChange={handleChange} />);
@@ -105,63 +103,11 @@ describe('SearchBar', () => {
     expect(handleChange).toHaveBeenCalledTimes(2);
   });
 
-  // it('typing in Search works', () => {
-  //   render(<Search filter={filterCardList} />);
-
-  //   expect(screen.queryByDisplayValue(/пи/)).toBeNull();
-  //   userEvent.type(screen.getByPlaceholderText(/Поиск.../i), 'пи');
-
-  //   expect(screen.queryByDisplayValue(/пи/)).toBeInTheDocument();
-  // });
-
-  it('filter is working, render CardList', () => {
-    const value = 'Выш';
-    render(
-      <div className="main-page">
-        <input placeholder="Поиск..." value="Выш" onChange={handleChange} />
-        {moviesArray.length > 0 && (
-          <CardList
-            openModalWindow={openModalWindow}
-            data={value.length ? moviesArray.filter((el) => el.title.includes(value)) : moviesArray}
-          />
-        )}
-        {moviesArray.length === 0 && <Message />}
-      </div>
-    );
-
-    userEvent.type(screen.getByPlaceholderText(/Поиск.../i), 'Выш');
-
-    expect(screen.queryByText(/пиноккио/i)).toBeNull();
-  });
-
-  it('filter is working, empty cards', () => {
-    const value = 'алхимик';
-    render(
-      <div className="main-page">
-        <input placeholder="Поиск..." value="Выш" onChange={handleChange} />
-        {moviesArray.length > 0 && (
-          <CardList
-            openModalWindow={openModalWindow}
-            data={value.length ? moviesArray.filter((el) => el.title.includes(value)) : moviesArray}
-          />
-        )}
-        {moviesArray.length === 0 && <Message />}
-      </div>
-    );
-
-    userEvent.type(screen.getByPlaceholderText(/Поиск.../i), 'алхимик');
-    expect(screen.queryByText(/вышка/i)).toBeNull();
-    expect(screen.queryByText(/пиноккио/i)).toBeNull();
-    expect(screen.queryByText(/Дитя тьмы/i)).toBeNull();
-  });
-
   it('filter is working, render Message', () => {
     moviesArray.length = 0;
     render(
       <div className="main-page">
-        {moviesArray.length > 0 && (
-          <CardList openModalWindow={openModalWindow} data={moviesArray} />
-        )}
+        {moviesArray.length > 0 && <CardList />}
         {moviesArray.length === 0 && <Message />}
       </div>
     );

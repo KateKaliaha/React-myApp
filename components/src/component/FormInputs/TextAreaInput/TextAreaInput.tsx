@@ -3,7 +3,7 @@ import { InputFormProps } from 'data/types';
 import './TextAreaInput.css';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 
-export const TextAreaInput = ({ label, register, errors, submit }: InputFormProps) => {
+export const TextAreaInput = ({ label, register, errors, submit }: InputFormProps): JSX.Element => {
   return (
     <label>
       <p> Отзыв о сайте:</p>

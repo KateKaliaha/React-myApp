@@ -7,12 +7,14 @@ import { FileInput } from 'component/FormInputs/FileInput/FileInput';
 import { RadioInput } from 'component/FormInputs/RadioInput/RadioInput';
 import { SelectInput } from 'component/FormInputs/SelectInput/SelectInput';
 import { TextAreaInput } from 'component/FormInputs/TextAreaInput/TextAreaInput';
-import { FormProps } from 'data/types';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import './Form.css';
+import DataContext from 'context/DataContext';
 
-export function Form({ changeCards }: FormProps) {
+export function Form(): JSX.Element {
+  const { state, dispatch } = useContext(DataContext);
+
   const {
     register,
     formState: { errors, isValid, isDirty, isSubmitted },
@@ -32,7 +34,7 @@ export function Form({ changeCards }: FormProps) {
 
   const [message, setMessage] = useState('');
 
-  const handleRegistration = async (data: FieldValues) => {
+  const handleRegistration = async (data: FieldValues): Promise<void> => {
     await setMessage('Отзыв сохранен успешно!!!');
 
     const dataCard = {
@@ -46,7 +48,7 @@ export function Form({ changeCards }: FormProps) {
     };
 
     setTimeout(() => {
-      changeCards(dataCard);
+      dispatch({ type: 'newFormCard', payload: [...state.cardForm, dataCard] });
       setMessage('');
       reset();
     }, 500);
