@@ -1,5 +1,5 @@
 import { Card } from 'component/Card/Card';
-import DataContext from 'context/DataContext';
+import DataContext, { ACTION } from 'context/DataContext';
 import { ICardApi } from 'data/interfaces';
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -14,8 +14,8 @@ export function CardList(): JSX.Element {
     if (id) {
       navigate(`${id}`);
       const card = state.data.find((el) => el.id === id) as ICardApi;
-      dispatch({ type: 'newDisplayStyle', payload: 'none' });
-      dispatch({ type: 'newCard', payload: card });
+      dispatch({ type: ACTION.DISPLAY_STYLE, payload: 'none' });
+      dispatch({ type: ACTION.MOVIE_CARD, payload: card });
     }
   }
 

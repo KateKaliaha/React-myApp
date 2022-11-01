@@ -1,5 +1,5 @@
 import { PopularContent } from 'component/UI/PopularContent/PopularContent';
-import DataContext from 'context/DataContext';
+import DataContext, { ACTION } from 'context/DataContext';
 import { ICardApi } from 'data/interfaces';
 import React, { useContext } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
@@ -60,7 +60,7 @@ export function MoviePage(): JSX.Element {
             data-testid="link-back"
             className="link-back"
             onClick={() => {
-              dispatch({ type: 'newDisplayStyle', payload: 'flex' });
+              dispatch({ type: ACTION.DISPLAY_STYLE, payload: 'flex' });
               goBack();
             }}
           >

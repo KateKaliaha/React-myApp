@@ -8,7 +8,7 @@ import { getPageCount, getPages } from 'utils/pages';
 import { Pages } from '../../component/PagesForMainPage/Pages';
 import { SortSelect } from 'component/SelectSortInput/SortSelect';
 import { getFetchDataDiscover, getFetchDataSearch } from 'services/apiService';
-import DataContext from 'context/DataContext';
+import DataContext, { ACTION } from 'context/DataContext';
 
 export function MainPage(): JSX.Element {
   const { state, dispatch } = useContext(DataContext);
@@ -27,7 +27,7 @@ export function MainPage(): JSX.Element {
 
       if (countMovieOnPage === limitMoviesOnPage[0]) {
         const firstPage = await func(pageFetch, funcValue);
-        dispatch({ type: 'newData', payload: [...firstPage.results] });
+        dispatch({ type: ACTION.DATA, payload: [...firstPage.results] });
         totalResults = firstPage.total_results;
       }
 
@@ -35,7 +35,7 @@ export function MainPage(): JSX.Element {
         const pagesArr = getPages(countMovieOnPage, pageFetch) as number[];
         const firstPage = await func(pagesArr[0], funcValue);
         const secondPage = await func(pagesArr[1], funcValue);
-        dispatch({ type: 'newData', payload: [...firstPage.results, ...secondPage.results] });
+        dispatch({ type: ACTION.DATA, payload: [...firstPage.results, ...secondPage.results] });
         totalResults = firstPage.total_results;
       }
 
@@ -45,14 +45,14 @@ export function MainPage(): JSX.Element {
         const secondPage = await func(pagesArr[1], funcValue);
         const thirdPage = await func(pagesArr[2], funcValue);
         dispatch({
-          type: 'newData',
+          type: ACTION.DATA,
           payload: [...firstPage.results, ...secondPage.results, ...thirdPage.results],
         });
         totalResults = firstPage.total_results;
       }
 
-      dispatch({ type: 'newTotalResults', payload: totalResults });
-      dispatch({ type: 'newTotalPages', payload: getPageCount(totalResults, countMovieOnPage) });
+      dispatch({ type: ACTION.TOTAL_RESULTS, payload: totalResults });
+      dispatch({ type: ACTION.TOTAL_PAGES, payload: getPageCount(totalResults, countMovieOnPage) });
     },
     [dispatch]
   );

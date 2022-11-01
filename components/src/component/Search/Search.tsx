@@ -1,4 +1,4 @@
-import DataContext from 'context/DataContext';
+import DataContext, { ACTION } from 'context/DataContext';
 import React, { useContext, useEffect } from 'react';
 
 export function Search(): JSX.Element {
@@ -15,18 +15,18 @@ export function Search(): JSX.Element {
   });
 
   function handleChangeInputSearch(event: React.FormEvent): void {
-    dispatch({ type: 'newInputValue', payload: (event.target as HTMLInputElement).value });
+    dispatch({ type: ACTION.INPUT_VALUE, payload: (event.target as HTMLInputElement).value });
   }
 
   function keyDown(event: React.KeyboardEvent): void {
     if (!state.isFirstLoad) {
-      dispatch({ type: 'newIsFirstLoad', payload: true });
+      dispatch({ type: ACTION.FIRST_LOAD, payload: true });
     }
 
     if (event.key === 'Enter') {
-      dispatch({ type: 'newValue', payload: (event.target as HTMLInputElement).value });
-      dispatch({ type: 'newPage', payload: 1 });
-      dispatch({ type: 'newSort', payload: 'popularity.desc' });
+      dispatch({ type: ACTION.SEARCH_VALUE, payload: (event.target as HTMLInputElement).value });
+      dispatch({ type: ACTION.PAGE, payload: 1 });
+      dispatch({ type: ACTION.SORT_VALUE, payload: 'popularity.desc' });
     }
   }
 

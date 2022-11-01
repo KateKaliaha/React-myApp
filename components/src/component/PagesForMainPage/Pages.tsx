@@ -1,4 +1,4 @@
-import DataContext from 'context/DataContext';
+import DataContext, { ACTION } from 'context/DataContext';
 import React, { useContext } from 'react';
 import { getPageCount, pagesArray } from 'utils/pages';
 
@@ -7,14 +7,14 @@ export const Pages = (): JSX.Element => {
   const pages = pagesArray(state.totalPages!);
 
   function changeMoviesByPage(btnNumber: number): void {
-    dispatch({ type: 'newPage', payload: btnNumber });
+    dispatch({ type: ACTION.PAGE, payload: btnNumber });
   }
 
   function changeCountMoviesOnPage(event: React.ChangeEvent<HTMLSelectElement>): void {
-    dispatch({ type: 'newPage', payload: 1 });
-    dispatch({ type: 'newCountMovieOnPage', payload: +event.target.value });
+    dispatch({ type: ACTION.PAGE, payload: 1 });
+    dispatch({ type: ACTION.COUNT_MOVIE_ON_PAGE, payload: +event.target.value });
     dispatch({
-      type: 'newTotalPages',
+      type: ACTION.TOTAL_PAGES,
       payload: getPageCount(state.totalResults!, +event.target.value),
     });
   }

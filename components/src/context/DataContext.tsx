@@ -17,6 +17,21 @@ const initialState = {
   cardForm: [],
 };
 
+export const ACTION = {
+  DISPLAY_STYLE: 'newDisplayStyle',
+  DATA: 'newData',
+  SEARCH_VALUE: 'newValue',
+  INPUT_VALUE: 'newInputValue',
+  PAGE: 'newPage',
+  TOTAL_PAGES: 'newTotalPages',
+  TOTAL_RESULTS: 'newTotalResults',
+  COUNT_MOVIE_ON_PAGE: 'newCountMovieOnPage',
+  MOVIE_CARD: 'newCard',
+  FIRST_LOAD: 'newIsFirstLoad',
+  SORT_VALUE: 'newSort',
+  FORM_CARD: 'newFormCard',
+};
+
 const reducer: Reducer<ReducerState, Action> = (state, action): ReducerState => {
   switch (action.type) {
     case 'newDisplayStyle':

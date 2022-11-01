@@ -10,7 +10,7 @@ import { TextAreaInput } from 'component/FormInputs/TextAreaInput/TextAreaInput'
 import React, { useContext, useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import './Form.css';
-import DataContext from 'context/DataContext';
+import DataContext, { ACTION } from 'context/DataContext';
 
 export function Form(): JSX.Element {
   const { state, dispatch } = useContext(DataContext);
@@ -48,7 +48,7 @@ export function Form(): JSX.Element {
     };
 
     setTimeout(() => {
-      dispatch({ type: 'newFormCard', payload: [...state.cardForm, dataCard] });
+      dispatch({ type: ACTION.FORM_CARD, payload: [...state.cardForm, dataCard] });
       setMessage('');
       reset();
     }, 500);
