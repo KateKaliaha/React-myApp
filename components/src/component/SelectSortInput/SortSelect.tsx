@@ -1,27 +1,34 @@
-import DataContext, { ACTION } from 'context/DataContext';
-import React, { useContext } from 'react';
+import { setNewPage, setNewTotalPage } from 'store/pageComponentSlice';
+import { useAppDispatch, useAppSelector } from '../../hook';
+import React from 'react';
 import { getPageCount } from 'utils/pages';
+import {
+  setNewSearchValue,
+  setNewInputValue,
+  setFirstLoad,
+  setNewSortValue,
+} from 'store/mainPageSlice';
 
 export const SortSelect = (): JSX.Element => {
-  const { state, dispatch } = useContext(DataContext);
+  const { countMovieOnPage, totalResults } = useAppSelector((state) => state.pageComponent);
+  const { sortValue } = useAppSelector((state) => state.mainPage);
+
+  const dispatch = useAppDispatch();
 
   function sortMoviesByValue(event: React.ChangeEvent<HTMLSelectElement>): void {
-    dispatch({ type: ACTION.PAGE, payload: 1 });
-    dispatch({ type: ACTION.INPUT_VALUE, payload: '' });
-    dispatch({ type: ACTION.SEARCH_VALUE, payload: null });
-    dispatch({ type: ACTION.SORT_VALUE, payload: event.target.value });
-    dispatch({
-      type: ACTION.TOTAL_PAGES,
-      payload: getPageCount(state.totalResults!, state.countMovieOnPage),
-    });
-    dispatch({ type: ACTION.FIRST_LOAD, payload: false });
+    dispatch(setNewPage(1));
+    dispatch(setNewInputValue(''));
+    dispatch(setNewSearchValue(null));
+    dispatch(setNewSortValue(event.target.value));
+    dispatch(setNewTotalPage(getPageCount(totalResults!, countMovieOnPage)));
+    dispatch(setFirstLoad(false));
     localStorage.removeItem('value');
   }
 
   return (
     <div className="select-wrapper">
       <select
-        defaultValue={state.sort}
+        defaultValue={sortValue}
         className="select-sort"
         id="select-sort"
         onChange={sortMoviesByValue}

@@ -7,13 +7,15 @@ import { FileInput } from 'component/FormInputs/FileInput/FileInput';
 import { RadioInput } from 'component/FormInputs/RadioInput/RadioInput';
 import { SelectInput } from 'component/FormInputs/SelectInput/SelectInput';
 import { TextAreaInput } from 'component/FormInputs/TextAreaInput/TextAreaInput';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import './Form.css';
-import DataContext, { ACTION } from 'context/DataContext';
+import { setNewCardForm } from '../../store/formCardSlice';
+import { useAppDispatch, useAppSelector } from '../../hook';
 
 export function Form(): JSX.Element {
-  const { state, dispatch } = useContext(DataContext);
+  const dispatch = useAppDispatch();
+  const cardForm = useAppSelector((state) => state.formCard.cardForm);
 
   const {
     register,
@@ -48,7 +50,7 @@ export function Form(): JSX.Element {
     };
 
     setTimeout(() => {
-      dispatch({ type: ACTION.FORM_CARD, payload: [...state.cardForm, dataCard] });
+      dispatch(setNewCardForm([...cardForm, dataCard]));
       setMessage('');
       reset();
     }, 500);

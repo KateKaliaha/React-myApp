@@ -1,13 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Navigation } from 'component/UI/Navigation/Navigation';
 import './Header.css';
-import DataContext from 'context/DataContext';
+import { useAppSelector } from 'hook';
 
 export function Header(): JSX.Element {
-  const { state } = useContext(DataContext);
+  const display = useAppSelector((state) => state.mainPage.display);
 
   return (
-    <header className="header" style={{ display: `${state.display}` }}>
+    <header className="header" style={{ display: `${display}` }}>
       <Navigation />
     </header>
   );

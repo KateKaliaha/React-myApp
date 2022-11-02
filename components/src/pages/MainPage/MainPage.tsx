@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Search } from 'component/Search/Search';
 import { CardList } from 'component/CardList/CardList';
 import { Message } from 'component/Message/Message';
@@ -8,10 +8,15 @@ import { getPageCount, getPages } from 'utils/pages';
 import { Pages } from '../../component/PagesForMainPage/Pages';
 import { SortSelect } from 'component/SelectSortInput/SortSelect';
 import { getFetchDataDiscover, getFetchDataSearch } from 'services/apiService';
-import DataContext, { ACTION } from 'context/DataContext';
+import { useAppDispatch, useAppSelector } from '../../hook';
+import { setNewData } from 'store/movieSlice';
+import { setNewTotalPage, setNewTotalResults } from 'store/pageComponentSlice';
 
 export function MainPage(): JSX.Element {
-  const { state, dispatch } = useContext(DataContext);
+  const dispatch = useAppDispatch();
+  const data = useAppSelector((state) => state.movie.movies);
+  const { countMovieOnPage, page } = useAppSelector((state) => state.pageComponent);
+  const { searchValue, isFirstLoad, sortValue } = useAppSelector((state) => state.mainPage);
 
   const [isFetching, setIsFetching] = useState(true);
 
@@ -27,7 +32,7 @@ export function MainPage(): JSX.Element {
 
       if (countMovieOnPage === limitMoviesOnPage[0]) {
         const firstPage = await func(pageFetch, funcValue);
-        dispatch({ type: ACTION.DATA, payload: [...firstPage.results] });
+        dispatch(setNewData([...firstPage.results]));
         totalResults = firstPage.total_results;
       }
 
@@ -35,7 +40,7 @@ export function MainPage(): JSX.Element {
         const pagesArr = getPages(countMovieOnPage, pageFetch) as number[];
         const firstPage = await func(pagesArr[0], funcValue);
         const secondPage = await func(pagesArr[1], funcValue);
-        dispatch({ type: ACTION.DATA, payload: [...firstPage.results, ...secondPage.results] });
+        dispatch(setNewData([...firstPage.results, ...secondPage.results]));
         totalResults = firstPage.total_results;
       }
 
@@ -44,15 +49,11 @@ export function MainPage(): JSX.Element {
         const firstPage = await func(pagesArr[0], funcValue);
         const secondPage = await func(pagesArr[1], funcValue);
         const thirdPage = await func(pagesArr[2], funcValue);
-        dispatch({
-          type: ACTION.DATA,
-          payload: [...firstPage.results, ...secondPage.results, ...thirdPage.results],
-        });
+        dispatch(setNewData([...firstPage.results, ...secondPage.results, ...thirdPage.results]));
         totalResults = firstPage.total_results;
       }
-
-      dispatch({ type: ACTION.TOTAL_RESULTS, payload: totalResults });
-      dispatch({ type: ACTION.TOTAL_PAGES, payload: getPageCount(totalResults, countMovieOnPage) });
+      dispatch(setNewTotalResults(totalResults));
+      dispatch(setNewTotalPage(getPageCount(totalResults, countMovieOnPage)));
     },
     [dispatch]
   );
@@ -61,7 +62,7 @@ export function MainPage(): JSX.Element {
     async (countMovieOnPage: number, pageFetch: number, sortValue: string) => {
       await setIsFetching(true);
 
-      if (state.value === null || !state.value.trim().length) {
+      if (searchValue === null || !searchValue.trim().length) {
         await getFetchDataByPagesAndValue(
           getFetchDataDiscover,
           countMovieOnPage,
@@ -73,18 +74,18 @@ export function MainPage(): JSX.Element {
           getFetchDataSearch,
           countMovieOnPage,
           pageFetch,
-          state.value
+          searchValue
         );
       }
 
       await setIsFetching(false);
     },
-    [getFetchDataByPagesAndValue, state.value]
+    [getFetchDataByPagesAndValue, searchValue]
   );
 
   useEffect(() => {
-    getFetchDataDependingOnValue(state.countMovieOnPage, state.page, state.sort);
-  }, [getFetchDataDependingOnValue, state.countMovieOnPage, state.page, state.sort]);
+    getFetchDataDependingOnValue(countMovieOnPage, page, sortValue);
+  }, [countMovieOnPage, getFetchDataDependingOnValue, page, sortValue]);
 
   return (
     <div className="main-page">
@@ -92,7 +93,7 @@ export function MainPage(): JSX.Element {
       {isFetching ? (
         <Loader />
       ) : (
-        state.data.length > 0 && (
+        data.length > 0 && (
           <>
             <SortSelect />
             <CardList />
@@ -100,7 +101,7 @@ export function MainPage(): JSX.Element {
           </>
         )
       )}
-      {state.data.length === 0 && state.isFirstLoad && <Message />}
+      {data.length === 0 && isFirstLoad && <Message />}
     </div>
   );
 }

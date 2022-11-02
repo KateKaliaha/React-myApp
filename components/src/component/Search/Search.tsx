@@ -1,32 +1,39 @@
-import DataContext, { ACTION } from 'context/DataContext';
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { setNewPage } from 'store/pageComponentSlice';
+import { useAppDispatch, useAppSelector } from '../../hook';
+import {
+  setNewSearchValue,
+  setNewInputValue,
+  setFirstLoad,
+  setNewSortValue,
+} from 'store/mainPageSlice';
 
 export function Search(): JSX.Element {
-  const { state, dispatch } = useContext(DataContext);
+  const { inputValue, isFirstLoad } = useAppSelector((state) => state.mainPage);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     return () => {
-      if (state.inputValue !== undefined || state.inputValue !== '') {
-        localStorage.setItem('value', state.inputValue!);
+      if (inputValue !== undefined || inputValue !== '') {
+        localStorage.setItem('value', inputValue!);
       } else {
         localStorage.removeItem('value');
       }
     };
   });
 
-  function handleChangeInputSearch(event: React.FormEvent): void {
-    dispatch({ type: ACTION.INPUT_VALUE, payload: (event.target as HTMLInputElement).value });
-  }
+  const handleChangeInputSearch = (event: React.FormEvent) =>
+    dispatch(setNewInputValue((event.target as HTMLInputElement).value));
 
   function keyDown(event: React.KeyboardEvent): void {
-    if (!state.isFirstLoad) {
-      dispatch({ type: ACTION.FIRST_LOAD, payload: true });
+    if (!isFirstLoad) {
+      dispatch(setFirstLoad(true));
     }
 
     if (event.key === 'Enter') {
-      dispatch({ type: ACTION.SEARCH_VALUE, payload: (event.target as HTMLInputElement).value });
-      dispatch({ type: ACTION.PAGE, payload: 1 });
-      dispatch({ type: ACTION.SORT_VALUE, payload: 'popularity.desc' });
+      dispatch(setNewSearchValue((event.target as HTMLInputElement).value));
+      dispatch(setNewPage(1));
+      dispatch(setNewSortValue('popularity.desc'));
     }
   }
 
@@ -37,7 +44,7 @@ export function Search(): JSX.Element {
       type="search"
       onChange={handleChangeInputSearch}
       onKeyDown={keyDown}
-      value={state.inputValue ? state.inputValue : ''}
+      value={inputValue ? inputValue : ''}
       placeholder="Поиск..."
     ></input>
   );

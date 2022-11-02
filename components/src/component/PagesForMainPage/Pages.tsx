@@ -1,22 +1,23 @@
-import DataContext, { ACTION } from 'context/DataContext';
-import React, { useContext } from 'react';
+import React from 'react';
 import { getPageCount, pagesArray } from 'utils/pages';
+import { setNewCountMovieOnPage, setNewPage, setNewTotalPage } from 'store/pageComponentSlice';
+import { useAppDispatch, useAppSelector } from '../../hook';
 
 export const Pages = (): JSX.Element => {
-  const { state, dispatch } = useContext(DataContext);
-  const pages = pagesArray(state.totalPages!);
+  const { countMovieOnPage, page, totalPages, totalResults } = useAppSelector(
+    (state) => state.pageComponent
+  );
+  const dispatch = useAppDispatch();
+  const pages = pagesArray(totalPages!);
 
   function changeMoviesByPage(btnNumber: number): void {
-    dispatch({ type: ACTION.PAGE, payload: btnNumber });
+    dispatch(setNewPage(btnNumber));
   }
 
   function changeCountMoviesOnPage(event: React.ChangeEvent<HTMLSelectElement>): void {
-    dispatch({ type: ACTION.PAGE, payload: 1 });
-    dispatch({ type: ACTION.COUNT_MOVIE_ON_PAGE, payload: +event.target.value });
-    dispatch({
-      type: ACTION.TOTAL_PAGES,
-      payload: getPageCount(state.totalResults!, +event.target.value),
-    });
+    dispatch(setNewPage(1));
+    dispatch(setNewCountMovieOnPage(+event.target.value));
+    dispatch(setNewTotalPage(getPageCount(totalResults!, +event.target.value)));
   }
 
   return (
@@ -25,7 +26,7 @@ export const Pages = (): JSX.Element => {
         {pages.map((item) => (
           <div
             data-testid={'page-btn'}
-            className={item === state.page ? 'page-btn active-page-btn' : 'page-btn'}
+            className={item === page ? 'page-btn active-page-btn' : 'page-btn'}
             key={item}
             onClick={() => changeMoviesByPage(item)}
           >
@@ -36,7 +37,7 @@ export const Pages = (): JSX.Element => {
       <div className="select-wrapper">
         <span>Количество фильмов на странице</span>
         <select
-          defaultValue={state.countMovieOnPage + ''}
+          defaultValue={countMovieOnPage + ''}
           className="select-page"
           id="select-page"
           onChange={(event) => changeCountMoviesOnPage(event)}

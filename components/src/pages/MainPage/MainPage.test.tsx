@@ -1,6 +1,5 @@
 import { render, act, screen, fireEvent, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import DataContext from 'context/DataContext';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { MainPage } from './MainPage';
@@ -155,9 +154,7 @@ describe('MainPage:', () => {
     await act(async () => {
       await render(
         <BrowserRouter>
-          <DataContext.Provider value={{ state, dispatch }}>
-            <MainPage />
-          </DataContext.Provider>
+          <MainPage />
         </BrowserRouter>
       );
     });

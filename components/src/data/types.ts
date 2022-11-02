@@ -39,17 +39,6 @@ export type Action = {
 };
 
 export type ReducerState = {
-  display: string;
-  data: ICardApi[];
-  value: string | null;
-  inputValue: undefined | string;
-  page: number;
-  totalPages: number | undefined;
-  totalResults: number | undefined;
-  countMovieOnPage: number;
-  card: ICardApi | undefined;
-  isFirstLoad: boolean;
-  sort: string;
   cardForm: IFormCard[];
 };
 
