@@ -1,26 +1,70 @@
 import React from 'react';
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import App from 'App';
 import userEvent from '@testing-library/user-event';
+import { renderWithProviders } from 'utils/test-utils';
+import { fakeMoviesArray } from './MainPage/MainPage.test';
 
 describe('App', () => {
   afterEach(cleanup);
-
   it('snapshot home page', () => {
-    const { container } = render(
+    const initialState = {
+      movies: fakeMoviesArray,
+      data: {
+        results: fakeMoviesArray,
+        totalResults: 600,
+      },
+      loading: false,
+    };
+    const initialPage = {
+      page: 1,
+      totalPages: 30,
+      totalResults: 600,
+      countMovieOnPage: 20,
+    };
+
+    const { container } = renderWithProviders(
       <BrowserRouter>
         <App />
-      </BrowserRouter>
+      </BrowserRouter>,
+      {
+        preloadedState: {
+          movie: initialState,
+          pageComponent: initialPage,
+        },
+      }
     );
+
     expect(container).toMatchSnapshot();
   });
 
   it('render main page', () => {
-    render(
+    const initialState = {
+      movies: fakeMoviesArray,
+      data: {
+        results: fakeMoviesArray,
+        totalResults: 600,
+      },
+      loading: false,
+    };
+    const initialPage = {
+      page: 1,
+      totalPages: 30,
+      totalResults: 600,
+      countMovieOnPage: 20,
+    };
+
+    renderWithProviders(
       <BrowserRouter>
         <App />
-      </BrowserRouter>
+      </BrowserRouter>,
+      {
+        preloadedState: {
+          movie: initialState,
+          pageComponent: initialPage,
+        },
+      }
     );
 
     const linkMain = screen.getByText(/Главная/i);
@@ -33,10 +77,31 @@ describe('App', () => {
   });
 
   it('render form page', () => {
-    render(
+    const initialState = {
+      movies: fakeMoviesArray,
+      data: {
+        results: fakeMoviesArray,
+        totalResults: 600,
+      },
+      loading: false,
+    };
+    const initialPage = {
+      page: 1,
+      totalPages: 30,
+      totalResults: 600,
+      countMovieOnPage: 20,
+    };
+
+    renderWithProviders(
       <BrowserRouter>
         <App />
-      </BrowserRouter>
+      </BrowserRouter>,
+      {
+        preloadedState: {
+          movie: initialState,
+          pageComponent: initialPage,
+        },
+      }
     );
 
     const linkForm = screen.getByText(/Отзыв/i);

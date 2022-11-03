@@ -1,12 +1,17 @@
 import React from 'react';
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { FormCard } from 'component/FormCard/FormCard';
-import { IFormCard } from 'data/interfaces';
+import { cleanup, fireEvent, screen } from '@testing-library/react';
+// import { FormCard } from 'component/FormCard/FormCard';
+// import { IFormCard } from 'data/interfaces';
 import userEvent from '@testing-library/user-event';
 import { Form } from './Form';
 import { act } from 'react-dom/test-utils';
+// import { Provider } from 'react-redux';
+// import store from 'store';
+// import { BrowserRouter } from 'react-router-dom';
+import { renderWithProviders } from '../../utils/test-utils';
+import { FormPage } from 'pages/FormPage/FormPage';
 
-const changeStateCard = jest.fn();
+// const changeStateCard = jest.fn();
 window.URL.createObjectURL = function () {
   return 'c/fff.png';
 };
@@ -67,17 +72,26 @@ const newReviewArr = [
 describe('Form', () => {
   afterEach(() => cleanup());
   it('render content from page with not empty data', async () => {
-    act(() => {
-      render(
-        <div className="form-page" data-testid="form-page">
-          <div className="form-content" data-testid="form-content">
-            {reviewArr.map((el, i) => (
-              <FormCard key={i} card={el} />
-            ))}
-          </div>
-        </div>
-      );
+    const initialState = {
+      cardForm: reviewArr,
+    };
+
+    renderWithProviders(<FormPage />, {
+      preloadedState: {
+        formCard: initialState,
+      },
     });
+    // act(() => {
+    //   render(
+    //     <div className="form-page" data-testid="form-page">
+    //       <div className="form-content" data-testid="form-content">
+    //         {reviewArr.map((el, i) => (
+    //           <FormCard key={i} card={el} />
+    //         ))}
+    //       </div>
+    //     </div>
+    //   );
+    // });
 
     const formContent = screen.getByTestId('form-content');
     expect(formContent).toBeInTheDocument();
@@ -90,17 +104,47 @@ describe('Form', () => {
   });
 
   it('first render error for name to be equal null', async () => {
-    act(() => {
-      render(<Form />);
+    const initialState = {
+      cardForm: reviewArr,
+    };
+
+    renderWithProviders(<Form />, {
+      preloadedState: {
+        formCard: initialState,
+      },
     });
+    // act(() => {
+    //   render(
+    //     <BrowserRouter>
+    //       <Provider store={store}>
+    //         <Form />
+    //       </Provider>
+    //     </BrowserRouter>
+    //   );
+    // });
 
     const errors = screen.getAllByTestId('error');
     expect(errors[0].innerHTML).toEqual('');
   });
 
   it('check disable button in form', async () => {
-    act(() => {
-      render(<Form />);
+    // act(() => {
+    //   render(
+    //     <BrowserRouter>
+    //       <Provider store={store}>
+    //         <Form />
+    //       </Provider>
+    //     </BrowserRouter>
+    //   );
+    // });
+    const initialState = {
+      cardForm: reviewArr,
+    };
+
+    renderWithProviders(<Form />, {
+      preloadedState: {
+        formCard: initialState,
+      },
     });
 
     const buttonSubmit = screen.getByRole('button');
@@ -116,8 +160,23 @@ describe('Form', () => {
   });
 
   it('check not disable button in the form after type in input', async () => {
-    act(() => {
-      render(<Form />);
+    // act(() => {
+    //   render(
+    //     <BrowserRouter>
+    //       <Provider store={store}>
+    //         <Form />
+    //       </Provider>
+    //     </BrowserRouter>
+    //   );
+    // });
+    const initialState = {
+      cardForm: reviewArr,
+    };
+
+    renderWithProviders(<Form />, {
+      preloadedState: {
+        formCard: initialState,
+      },
     });
 
     const input = screen.getByTestId('name');
@@ -128,19 +187,32 @@ describe('Form', () => {
   });
 
   it('render new content form page after change array of review', async () => {
-    changeStateCard.mockReturnValue(newReviewArr);
-    const arr = changeStateCard();
-    act(() => {
-      render(
-        <div className="form-page" data-testid="form-page">
-          <Form />
-          <div className="form-content" data-testid="form-content">
-            {arr.map((el: IFormCard, i: React.Key | null | undefined) => (
-              <FormCard key={i} card={el} />
-            ))}
-          </div>
-        </div>
-      );
+    // changeStateCard.mockReturnValue(newReviewArr);
+    // const arr = changeStateCard();
+    // act(() => {
+    //   render(
+    //     <BrowserRouter>
+    //       <Provider store={store}>
+    //         <div className="form-page" data-testid="form-page">
+    //           <Form />
+    //           <div className="form-content" data-testid="form-content">
+    //             {arr.map((el: IFormCard, i: React.Key | null | undefined) => (
+    //               <FormCard key={i} card={el} />
+    //             ))}
+    //           </div>
+    //         </div>
+    //       </Provider>
+    //     </BrowserRouter>
+    //   );
+    // });
+    const initialState = {
+      cardForm: newReviewArr,
+    };
+
+    renderWithProviders(<FormPage />, {
+      preloadedState: {
+        formCard: initialState,
+      },
     });
 
     const formCard = screen.getAllByTestId('review-card');
@@ -148,8 +220,23 @@ describe('Form', () => {
   });
 
   it('type valid all input', async () => {
-    act(() => {
-      render(<Form />);
+    // act(() => {
+    //   render(
+    //     <BrowserRouter>
+    //       <Provider store={store}>
+    //         <Form />
+    //       </Provider>
+    //     </BrowserRouter>
+    //   );
+    // });
+    const initialState = {
+      cardForm: reviewArr,
+    };
+
+    renderWithProviders(<Form />, {
+      preloadedState: {
+        formCard: initialState,
+      },
     });
 
     const message = screen.queryByTestId('message-success');
@@ -192,8 +279,23 @@ describe('Form', () => {
   });
 
   it('type invalid some inputs', async () => {
-    act(() => {
-      render(<Form />);
+    // act(() => {
+    //   render(
+    //     <BrowserRouter>
+    //       <Provider store={store}>
+    //         <Form />
+    //       </Provider>
+    //     </BrowserRouter>
+    //   );
+    // });
+    const initialState = {
+      cardForm: reviewArr,
+    };
+
+    renderWithProviders(<Form />, {
+      preloadedState: {
+        formCard: initialState,
+      },
     });
 
     const message = screen.queryByTestId('message-success');

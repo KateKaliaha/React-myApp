@@ -3,12 +3,16 @@ import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import App from 'App';
+import { Provider } from 'react-redux';
+import store from 'store';
 
 describe('Router', () => {
   it('render headers links in app', () => {
     render(
       <BrowserRouter>
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </BrowserRouter>
     );
 
@@ -21,7 +25,9 @@ describe('Router', () => {
   it('change render pages by links', () => {
     render(
       <BrowserRouter>
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </BrowserRouter>
     );
 
@@ -40,7 +46,9 @@ describe('Router', () => {
   it('error page', () => {
     render(
       <MemoryRouter initialEntries={['/fff']}>
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </MemoryRouter>
     );
 

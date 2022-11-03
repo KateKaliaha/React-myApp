@@ -2,12 +2,21 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event';
 import { Form } from 'component/Form/Form';
 import React from 'react';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+import store from 'store';
 
 describe('DateInput:', () => {
   beforeEach(cleanup);
 
   it('type valid date not to call errors', async () => {
-    render(<Form />);
+    render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <Form />
+        </Provider>
+      </BrowserRouter>
+    );
 
     const date = screen.getByTestId('birthday');
     const btnSubmit = screen.getByTestId('btn-submit');
@@ -22,7 +31,13 @@ describe('DateInput:', () => {
   });
 
   it('type invalid date to call validate error', async () => {
-    render(<Form />);
+    render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <Form />
+        </Provider>
+      </BrowserRouter>
+    );
 
     const date = screen.getByTestId('birthday');
     const btnSubmit = screen.getByTestId('btn-submit');

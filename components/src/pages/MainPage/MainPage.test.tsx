@@ -1,8 +1,9 @@
-import { render, act, screen, fireEvent, cleanup } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen, cleanup } from '@testing-library/react';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { MainPage } from './MainPage';
+import { renderWithProviders } from '../../utils/test-utils';
+import { CardList } from 'component/CardList/CardList';
+import { Pages } from 'component/PagesForMainPage/Pages';
 
 export const fakeMoviesArray = [
   {
@@ -74,109 +75,43 @@ export const fakeMoviesArray = [
   },
 ];
 
-const localStorageMock = (function () {
-  let store: Record<string, string> = {};
-
-  return {
-    getItem(key: string) {
-      return store[key];
-    },
-
-    setItem(key: string, value: string) {
-      store[key] = value;
-    },
-
-    clear() {
-      store = {};
-    },
-
-    removeItem(key: string) {
-      delete store[key];
-    },
-
-    getAll() {
-      return store;
-    },
-  };
-})();
-
-Object.defineProperty(window, 'localStorage', { value: localStorageMock });
-
-export const state = {
-  display: 'flex',
-  data: fakeMoviesArray,
-  value: null,
-  inputValue: undefined,
-  page: 1,
-  totalPages: 1,
-  totalResults: 4,
-  countMovieOnPage: 20,
-  card: {
-    adult: true,
-    backdrop_path: '/s2KKdUusmKoCNIR0o5Byus4EcJO.jpg',
-    genre_ids: [18, 80],
-    id: 1021735,
-    original_language: 'ky',
-    original_title: 'Продаётся дом',
-    overview: ' ',
-    popularity: 13.025,
-    poster_path: '/s2KKdUusmKoCNIR0o5Byus4EcJO.jpg',
-    release_date: '2022-10-10',
-    title: 'Продаётся дом',
-    video: false,
-    vote_average: 0,
-    vote_count: 0,
-  },
-  isFirstLoad: false,
-  sort: 'popularity.desc',
-  cardForm: [],
-};
-export const dispatch = jest.fn();
-
 describe('MainPage:', () => {
   afterEach(cleanup);
 
-  beforeEach(() => {
-    window.localStorage.clear();
-    const mockJsonPromise = Promise.resolve({
-      page: 0,
-      results: [...fakeMoviesArray],
-      total_pages: 9,
-      total_results: 174,
-    });
-    const mockFetchPromise = Promise.resolve({
-      json: () => mockJsonPromise,
-    });
-    global.fetch = jest.fn().mockImplementation(() => mockFetchPromise) as jest.Mock;
-  });
-
   it('render main page with cards', async () => {
-    await act(async () => {
-      await render(
+    const initialState = {
+      movies: fakeMoviesArray,
+      data: {
+        results: fakeMoviesArray,
+        totalResults: 600,
+      },
+      loading: false,
+    };
+    const initialPage = {
+      page: 1,
+      totalPages: 30,
+      totalResults: 600,
+      countMovieOnPage: 20,
+    };
+
+    renderWithProviders(
+      <>
         <BrowserRouter>
-          <MainPage />
+          <CardList />
+          <Pages />
         </BrowserRouter>
-      );
-    });
+      </>,
+      {
+        preloadedState: {
+          movie: initialState,
+          pageComponent: initialPage,
+        },
+      }
+    );
 
     const card = screen.queryAllByTestId('card');
     expect(card.length).toBe(4);
     const page = screen.queryAllByTestId('page-btn');
-    expect(page.length).toBe(1);
-  });
-
-  it('check not render cards when type nonexistent request', async () => {
-    await act(async () => {
-      render(<MainPage />);
-    });
-
-    const input = screen.getByRole('searchbox');
-
-    await act(async () => {
-      await userEvent.type(input, 'дом1111');
-      await fireEvent.keyDown(input, { keyCode: 13 });
-    });
-    const card = screen.queryAllByTestId('card');
-    expect(card.length).toBe(0);
+    expect(page.length).toBe(30);
   });
 });

@@ -4,6 +4,8 @@ import { CardList } from 'component/CardList/CardList';
 import { Message } from 'component/Message/Message';
 import { Search } from 'component/Search/Search';
 import React from 'react';
+import { Provider } from 'react-redux';
+import store from 'store';
 
 const handleChange = jest.fn();
 const moviesArray = [
@@ -75,10 +77,26 @@ const moviesArray = [
     vote_count: 30,
   },
 ];
+const mockDispatch = jest.fn();
+const mockSelector = jest.fn();
+
+jest.mock('react-redux', () => ({
+  ...jest.requireActual('react-redux'),
+  useDispatch: () => mockDispatch,
+  useSelector: () => mockSelector,
+}));
 
 describe('SearchBar', () => {
+  // beforeEach(() => {
+  //   useAppSelector.mockClear();
+  //   useDispatch.mockClear();
+  // });
   it('render search component', () => {
-    render(<Search />);
+    render(
+      <Provider store={store}>
+        <Search />
+      </Provider>
+    );
 
     const input = screen.getByPlaceholderText(/Поиск.../i);
 
@@ -86,7 +104,11 @@ describe('SearchBar', () => {
   });
 
   it('input focus', () => {
-    render(<Search />);
+    render(
+      <Provider store={store}>
+        <Search />
+      </Provider>
+    );
 
     const input = screen.getByPlaceholderText(/Поиск.../i);
 
