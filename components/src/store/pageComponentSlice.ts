@@ -33,6 +33,6 @@ const pageComponentSlice = createSlice({
   },
 });
 
-export const { setNewPage, setNewTotalPage, setNewTotalResults, setNewCountMovieOnPage } =
+export const { setNewPage, setNewTotalPage, setNewCountMovieOnPage, setNewTotalResults } =
   pageComponentSlice.actions;
 export default pageComponentSlice.reducer;

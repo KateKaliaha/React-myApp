@@ -11,6 +11,7 @@ import {
 
 export const SortSelect = (): JSX.Element => {
   const { countMovieOnPage, totalResults } = useAppSelector((state) => state.pageComponent);
+
   const { sortValue } = useAppSelector((state) => state.mainPage);
 
   const dispatch = useAppDispatch();

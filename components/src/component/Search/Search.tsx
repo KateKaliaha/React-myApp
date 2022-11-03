@@ -31,8 +31,8 @@ export function Search(): JSX.Element {
     }
 
     if (event.key === 'Enter') {
-      dispatch(setNewSearchValue((event.target as HTMLInputElement).value));
       dispatch(setNewPage(1));
+      dispatch(setNewSearchValue((event.target as HTMLInputElement).value));
       dispatch(setNewSortValue('popularity.desc'));
     }
   }
